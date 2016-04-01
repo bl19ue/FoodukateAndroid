@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Foodukate</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="main_activity">MainActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_recipe_detail">RecipeDetailActivity</string>
+</resources>

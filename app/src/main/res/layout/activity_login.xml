@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.app.foodukate.foodukate.LoginActivity"
+    android:orientation="vertical"
+    android:background="@drawable/foodukate_main_e"
+    android:id="@+id/loginScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:maxLength="30"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:theme="@style/Login"
+            android:hint="Username"
+            android:textColorHint="@color/gray"
+            android:textSize="24sp"
+            android:textColor="@color/gray"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:maxLength="30"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:theme="@style/Login"
+            android:hint="Password"
+            android:textColorHint="@color/gray"
+            android:textSize="24sp"
+            android:textColor="@color/gray" />
+
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/login_button"
+            android:text="Login"
+            android:textSize="24sp"
+            android:textColor="@color/gray"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

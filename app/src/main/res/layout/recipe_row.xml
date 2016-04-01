@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recipe_list_layout"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/recipe_image"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:scaleType="centerCrop"/>
+
+
+    <TextView
+        android:id="@+id/recipe_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/recipe_footer"
+        android:textSize="28sp"
+        android:layout_below="@+id/recipe_image"
+        android:layout_marginTop="-58dp"
+
+        android:paddingLeft="25dp"
+        android:paddingTop="6dp"
+
+        android:text="Sushi and Soup"
+        android:textColor="@color/white"
+        android:typeface="serif"/>
+
+</RelativeLayout>
