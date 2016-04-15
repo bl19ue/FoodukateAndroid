@@ -2,6 +2,10 @@ package com.app.foodukate.recipe;
 
 import com.app.foodukate.recipe.Recipe;
 
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -12,4 +16,7 @@ import retrofit2.http.Path;
 public interface RecipeApi {
     @GET("/recipe")
     public void getAllRecipes(Callback<Recipe> response);
+
+    @GET("recipes/search/name/{name}")
+    public Call<ResponseBody> getRecipeByName(@Path("name") String name);
 }

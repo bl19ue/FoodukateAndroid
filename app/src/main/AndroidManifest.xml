@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -22,10 +26,24 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/main_activity" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name="com.app.foodukate.recipe.RecipeDetailActivity"
             android:label="@string/title_activity_recipe_detail" >
+        </activity>
+        <activity
+            android:name="com.app.foodukate.menu_scanner.ScannedListActivity"
+            android:label="@string/title_activity_scanned_list" >
+        </activity>
+        <activity
+            android:name=".BaseActivity"
+            android:label="@string/title_activity_base" >
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
         </activity>
     </application>
 

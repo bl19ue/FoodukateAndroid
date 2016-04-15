@@ -19,11 +19,8 @@
         android:textSize="28sp"
         android:layout_below="@+id/recipe_image"
         android:layout_marginTop="-58dp"
-
         android:paddingLeft="25dp"
         android:paddingTop="6dp"
-
-        android:text="Sushi and Soup"
         android:textColor="@color/white"
         android:typeface="serif"/>
 

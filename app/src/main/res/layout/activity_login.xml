@@ -26,25 +26,21 @@
             android:maxLength="30"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:theme="@style/Login"
-            android:hint="Username"
-            android:textColorHint="@color/gray"
-            android:textSize="24sp"
-            android:textColor="@color/gray"
+            android:theme="@style/login_button"
+            android:hint="@string/username"
             />
 
         <EditText
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:maxLength="30"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:theme="@style/Login"
-            android:hint="Password"
-            android:textColorHint="@color/gray"
-            android:textSize="24sp"
-            android:textColor="@color/gray" />
+            android:theme="@style/login_button"
+            android:hint="@string/password"
+            />
 
 
         <Button
@@ -54,7 +50,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:background="@drawable/login_button"
-            android:text="Login"
+            android:text="@string/login"
             android:textSize="24sp"
             android:textColor="@color/gray"
             />

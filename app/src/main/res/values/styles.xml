@@ -12,6 +12,13 @@
         <!-- colorControlActivated & colorControlHighlight use the colorAccent color by default -->
     </style>
 
+    <style name="login_button">
+        <item name="colorControlNormal">#0000</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColorHint">#9E9E9E</item>
+        <item name="android:textColor">#9E9E9E</item>
+    </style>
+
     <color name="white">#ffffff</color>
     <color name="transparent">#0000</color>
     <color name="gray">#C2C3C8</color>

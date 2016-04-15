@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.app.foodukate.foodukate.BaseActivity">
+
+    <!--<item android:id="@+id/action_search"-->
+        <!--android:title="Search"-->
+        <!--android:icon="@drawable/search"-->
+        <!--app:showAsAction="ifRoom"/>-->
+
+    <item android:id="@+id/search"
+        android:title="@string/search_title"
+        android:icon="@drawable/search"
+        app:showAsAction="collapseActionView|ifRoom"
+        android:actionViewClass="android.widget.SearchView" />
+
+    <item android:id="@+id/action_camera"
+        android:title="Camera"
+        android:icon="@drawable/camera"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+</menu>

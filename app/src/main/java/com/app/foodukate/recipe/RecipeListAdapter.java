@@ -1,6 +1,9 @@
 package com.app.foodukate.recipe;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +61,7 @@ public class RecipeListAdapter extends BaseAdapter {
         final Recipe recipe = recipeList.get(position);
         myViewHolder.recipeName.setText(recipe.getName());
         myViewHolder.recipeImage.setImageUrl(recipe.getImageUrl(), imageLoader);
-        //TODO onClick
+        myViewHolder.recipeImage.setOnClickListener(new RecipeItemClickListener(recipe.getId()));
 
         return convertView;
     }
@@ -77,5 +80,20 @@ public class RecipeListAdapter extends BaseAdapter {
             recipeName = (TextView) item.findViewById(R.id.recipe_name);
             recipeImage = (NetworkImageView) item.findViewById(R.id.recipe_image);
         }
+    }
+
+    class RecipeItemClickListener implements View.OnClickListener {
+
+        public RecipeItemClickListener(String recipeID) {
+            this.recipeID = recipeID;
+        }
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, RecipeDetailActivity.class);
+            i.putExtra("recipe_id", this.recipeID);
+            context.startActivity(i);
+        }
+
+        private String recipeID;
     }
 }

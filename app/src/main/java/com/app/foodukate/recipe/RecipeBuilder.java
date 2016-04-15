@@ -7,6 +7,8 @@ import java.util.ArrayList;
  */
 public class RecipeBuilder {
 
+    String id;
+    String _id;
     String name;
     String source;
     String imageUrl;
@@ -23,6 +25,16 @@ public class RecipeBuilder {
 
     public Recipe build() {
         return new Recipe(this);
+    }
+
+    public RecipeBuilder withId(String _id) {
+        this._id = _id;
+        return this;
+    }
+
+    public RecipeBuilder withRecipeId(String id) {
+        this.id = id;
+        return this;
     }
 
     public RecipeBuilder withName(String name) {

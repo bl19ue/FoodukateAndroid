@@ -12,6 +12,9 @@ import android.widget.ListView;
 import com.app.foodukate.client.RestService;
 import com.app.foodukate.foodukate.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -38,9 +41,35 @@ public class RecipeListFragment extends Fragment {
 
         ListView recipeList = (ListView) view.findViewById(R.id.recipe_list);
 
-        RecipeListAdapter recipeListAdapter = new RecipeListAdapter(getActivity(), getRecipe());
+        String recipes = null;
+        try {
+            recipes = getArguments().getString("recipes");
+        } catch(Exception e) {
+            System.out.println("fail");
+        }
+        if(recipes != null) {
+            try {
+                JSONArray recipeJSONList = new JSONArray(recipes);
+                ArrayList<Recipe> recipeArrayList = new ArrayList<>();
 
-        recipeList.setAdapter(recipeListAdapter);
+                for(int i=0;i<recipeJSONList.length();i++) {
+                    String name = recipeJSONList.getJSONObject(i).getString("name");
+                    String imgUrl = recipeJSONList.getJSONObject(i).getString("imgUrl");
+                    String id = recipeJSONList.getJSONObject(i).getString("id");
+
+                    Recipe thisRecipe = new RecipeBuilder().withRecipeId(id).withName(name).withImageUrl(imgUrl).build();
+                    recipeArrayList.add(thisRecipe);
+                }
+                RecipeListAdapter recipeListAdapter = new RecipeListAdapter(getActivity(), recipeArrayList);
+                recipeList.setAdapter(recipeListAdapter);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            RecipeListAdapter recipeListAdapter = new RecipeListAdapter(getActivity(), getRecipe());
+
+            recipeList.setAdapter(recipeListAdapter);
 
 //        RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
 //        recipeApi.getAllRecipes(new Callback<Recipe>() {
@@ -54,35 +83,35 @@ public class RecipeListFragment extends Fragment {
 //
 //            }
 //        });
-
+        }
         return view;
     }
 
 
     public ArrayList<Recipe> getRecipe() {
         ArrayList<Recipe> recipes = new ArrayList<>();
-        recipes.add(new RecipeBuilder().withName("Sushi")
+        recipes.add(new RecipeBuilder().withId("1234").withName("Sushi")
                 .withImageUrl("http://www.akakiko.com.cy/wp-content/uploads/2015/05/sushi-set-small.jpg").build());
 
-        recipes.add(new RecipeBuilder().withName("Egg")
+        recipes.add(new RecipeBuilder().withId("1234").withName("Egg")
                 .withImageUrl("http://si.wsj.net/public/resources/images/OD-BF661_FOODUS_P_20150312213714.jpg").build());
 
-        recipes.add(new RecipeBuilder().withName("Hot Dog")
+        recipes.add(new RecipeBuilder().withId("1234").withName("Hot Dog")
                 .withImageUrl("http://cache-graphicslib.viator.com/graphicslib/thumbs674x446/5471/SITours/small-group-chicago-food-tour-wicker-park-and-bucktown-in-chicago-108824.jpg").build());
 
-        recipes.add(new RecipeBuilder().withName("Sushi")
+        recipes.add(new RecipeBuilder().withId("1234").withName("Sushi")
                 .withImageUrl("http://www.akakiko.com.cy/wp-content/uploads/2015/05/sushi-set-small.jpg").build());
 
-        recipes.add(new RecipeBuilder().withName("Sushi")
+        recipes.add(new RecipeBuilder().withId("1234").withName("Sushi")
                 .withImageUrl("http://www.akakiko.com.cy/wp-content/uploads/2015/05/sushi-set-small.jpg").build());
 
-        recipes.add(new RecipeBuilder().withName("Sushi")
+        recipes.add(new RecipeBuilder().withId("1234").withName("Sushi")
                 .withImageUrl("http://www.akakiko.com.cy/wp-content/uploads/2015/05/sushi-set-small.jpg").build());
 
-        recipes.add(new RecipeBuilder().withName("Sushi")
+        recipes.add(new RecipeBuilder().withId("1234").withName("Sushi")
                 .withImageUrl("http://www.akakiko.com.cy/wp-content/uploads/2015/05/sushi-set-small.jpg").build());
 
-        recipes.add(new RecipeBuilder().withName("Sushi")
+        recipes.add(new RecipeBuilder().withId("1234").withName("Sushi")
                 .withImageUrl("http://www.akakiko.com.cy/wp-content/uploads/2015/05/sushi-set-small.jpg").build());
 
         return recipes;

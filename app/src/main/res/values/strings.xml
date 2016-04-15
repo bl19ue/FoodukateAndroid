@@ -3,10 +3,18 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="main_activity">MainActivity</string>
+    <string name="title_activity_login"></string>
+    <string name="main_activity"></string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_recipe_detail">RecipeDetailActivity</string>
+    <string name="title_activity_recipe_detail"></string>
+    <string name="title_activity_scanned_list"></string>
+    <string name="title_activity_base"></string>
+
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">login</string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">Search</string>
 </resources>

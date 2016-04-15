@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 
 import com.app.foodukate.recipe.RecipeDetailActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +28,8 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
+                Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(mainActivityIntent);
             }
         });
 
