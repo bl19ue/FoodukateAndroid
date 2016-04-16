@@ -17,4 +17,5 @@
     <string name="login">login</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Search</string>
+    <string name="camera">Camera</string>
 </resources>

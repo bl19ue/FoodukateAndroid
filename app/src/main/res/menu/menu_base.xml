@@ -8,14 +8,14 @@
         <!--android:icon="@drawable/search"-->
         <!--app:showAsAction="ifRoom"/>-->
 
-    <item android:id="@+id/search"
+    <item android:id="@+id/action_search"
         android:title="@string/search_title"
         android:icon="@drawable/search"
         app:showAsAction="collapseActionView|ifRoom"
-        android:actionViewClass="android.widget.SearchView" />
+        app:actionViewClass="android.widget.SearchView" />
 
     <item android:id="@+id/action_camera"
-        android:title="Camera"
+        android:title="@string/camera"
         android:icon="@drawable/camera"
         app:showAsAction="ifRoom"/>
 

@@ -7,11 +7,25 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
+import com.app.foodukate.client.RestService;
+import com.app.foodukate.recipe.RecipeApi;
 import com.app.foodukate.recipe.RecipeListFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -21,27 +35,17 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         String query = handleIntent(getIntent());
-
-        FragmentManager fragmentManager = getFragmentManager();
-        // Or: FragmentManager fragmentManager = getSupportFragmentManager()
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        RecipeListFragment fragment = new RecipeListFragment();
-
-        Bundle bundle = new Bundle();
-        if(query == null) {
-            String recipes = getIntent().getStringExtra("recipes");
-            if (savedInstanceState == null) {
-                bundle.putString("recipes", recipes);
-            }
+        String recipe_name = getIntent().getStringExtra("recipe_name");
+        String searchBy = "";
+        if(query != null) {
+            searchBy = query;
+        } else if(recipe_name != null) {
+            searchBy = recipe_name;
         } else {
-            bundle.putString("recipeQuery", query);
+            searchBy = null;
         }
 
-        fragment.setArguments(bundle);
-        fragmentTransaction.add(R.id.recipe_fragment_container, fragment);
-        fragmentTransaction.commit();
-
-
+        searchRecipe(searchBy);
     }
 
     @Override
@@ -59,15 +63,69 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * For search by search box
+     *
+     * @param intent
+     * @return query if searched by search box
+     */
     private String handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            //use the query to search your data somehow
-
             return query;
         }
 
         return null;
     }
+
+    private void searchRecipe(String searchBy) {
+        final RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
+        if(searchBy == null) {
+            attachFragment(null);
+        } else {
+            Call<ResponseBody> recipes = recipeApi.getRecipeByName(searchBy);
+
+            recipes.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        JSONObject recipesResponse = new JSONObject(response.body().string());
+                        JSONArray recipes = recipesResponse.getJSONObject("recipes").getJSONArray("data");
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("recipes", recipes.toString());
+                        attachFragment(bundle);
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse: IOException: " + e.toString());
+                    } catch (JSONException e) {
+                        Log.e(TAG, "onResponse: JSONException:  " + e.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e(TAG, "Enqueue: " + t.getMessage());
+                }
+            });
+        }
+    }
+
+    private void attachFragment(Bundle bundle) {
+        FragmentManager fragmentManager = getFragmentManager();
+        // Or: FragmentManager fragmentManager = getSupportFragmentManager()
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        RecipeListFragment fragment = new RecipeListFragment();
+
+        if(bundle != null) {
+            fragment.setArguments(bundle);
+        }
+        fragmentTransaction.add(R.id.recipe_fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+
+
+    private static final String TAG = "MainActivity: ";
+
 
 }

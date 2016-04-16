@@ -4,6 +4,7 @@ package com.app.foodukate.recipe;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,13 +41,14 @@ public class RecipeListFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         ListView recipeList = (ListView) view.findViewById(R.id.recipe_list);
-
         String recipes = null;
+
         try {
             recipes = getArguments().getString("recipes");
         } catch(Exception e) {
-            System.out.println("fail");
+            Log.e(TAG, "onCreateView: " + e.getMessage());
         }
+
         if(recipes != null) {
             try {
                 JSONArray recipeJSONList = new JSONArray(recipes);
@@ -64,25 +66,13 @@ public class RecipeListFragment extends Fragment {
                 recipeList.setAdapter(recipeListAdapter);
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, "onCreateView: JSONException: " + e.getMessage());
             }
         } else {
             RecipeListAdapter recipeListAdapter = new RecipeListAdapter(getActivity(), getRecipe());
 
             recipeList.setAdapter(recipeListAdapter);
 
-//        RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
-//        recipeApi.getAllRecipes(new Callback<Recipe>() {
-//            @Override
-//            public void onResponse(Call<Recipe> call, Response<Recipe> response) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Recipe> call, Throwable t) {
-//
-//            }
-//        });
         }
         return view;
     }
@@ -102,8 +92,8 @@ public class RecipeListFragment extends Fragment {
         recipes.add(new RecipeBuilder().withId("1234").withName("Sushi")
                 .withImageUrl("http://www.akakiko.com.cy/wp-content/uploads/2015/05/sushi-set-small.jpg").build());
 
-        recipes.add(new RecipeBuilder().withId("1234").withName("Sushi")
-                .withImageUrl("http://www.akakiko.com.cy/wp-content/uploads/2015/05/sushi-set-small.jpg").build());
+        recipes.add(new RecipeBuilder().withId("1234").withName("Egg")
+                .withImageUrl("http://si.wsj.net/public/resources/images/OD-BF661_FOODUS_P_20150312213714.jpg").build());
 
         recipes.add(new RecipeBuilder().withId("1234").withName("Sushi")
                 .withImageUrl("http://www.akakiko.com.cy/wp-content/uploads/2015/05/sushi-set-small.jpg").build());
@@ -116,5 +106,7 @@ public class RecipeListFragment extends Fragment {
 
         return recipes;
     }
+
+    private static final String TAG = "RecipeListFragment: ";
 
 }

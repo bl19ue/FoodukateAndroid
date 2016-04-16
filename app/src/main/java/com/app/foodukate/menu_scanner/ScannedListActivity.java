@@ -54,11 +54,12 @@ public class ScannedListActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
                     String name = parsedResults[position];
-                    final RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
-                    Call<ResponseBody> recipes = recipeApi.getRecipeByName(name);
-                    handleResponse(recipes);
+
+                    Intent mainActivityIntent = new Intent(ScannedListActivity.this, MainActivity.class);
+                    mainActivityIntent.putExtra("recipe_name", name);
+                    ScannedListActivity.this.startActivity(mainActivityIntent);
                 } catch(Exception e) {
-                    System.out.println("Failed");
+                    Log.e(TAG, "onItemClickListener: " + e.getMessage());
                 }
             }
         });
@@ -77,30 +78,6 @@ public class ScannedListActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void handleResponse(Call<ResponseBody> recipes) {
-        recipes.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    JSONObject recipesResponse = new JSONObject(response.body().string());
-                    JSONArray recipes = recipesResponse.getJSONObject("recipes").getJSONArray("data");
-
-                    Intent mainActivityIntent = new Intent(ScannedListActivity.this, MainActivity.class);
-                    mainActivityIntent.putExtra("recipes", recipes.toString());
-                    ScannedListActivity.this.startActivity(mainActivityIntent);
-                } catch (IOException e) {
-                    Log.e(TAG, "onResponse: IOException: " + e.toString());
-                } catch (JSONException e) {
-                    Log.e(TAG, "onResponse: JSONException:  " + e.toString());
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e(TAG, "Enqueue: " + t.getMessage());
-            }
-        });
     }
 
     private String[] parseResults(String results) {
