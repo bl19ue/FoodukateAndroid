@@ -14,9 +14,12 @@ import retrofit2.http.Path;
  * Created by sumitvalecha on 3/14/16.
  */
 public interface RecipeApi {
-    @GET("/recipe")
+    @GET("recipes/")
     public void getAllRecipes(Callback<Recipe> response);
 
     @GET("recipes/search/name/{name}")
     public Call<ResponseBody> getRecipeByName(@Path("name") String name);
+
+    @GET("recipes/search/id/{recipeId}")
+    public Call<ResponseBody> getRecipeById(@Path("recipeId") String recipeId);
 }

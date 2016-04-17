@@ -7,8 +7,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.app.foodukate.client.RestService;
 import com.app.foodukate.foodukate.BaseActivity;
 import com.app.foodukate.foodukate.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RecipeDetailActivity extends BaseActivity {
 
@@ -19,19 +30,15 @@ public class RecipeDetailActivity extends BaseActivity {
 
         this.recipeId = getIntent().getStringExtra("recipe_id");
         // Send GET request to get the recipe detail
-        Log.i("RecipeId: ", "" + this.recipeId);
+        Log.i(TAG, "onCreate: recipe_id: " + this.recipeId);
 
-        RecipeDetailPagerAdapter recipeDetailPagerAdapter = new RecipeDetailPagerAdapter(getSupportFragmentManager());
-        ViewPager viewPager = (ViewPager) findViewById(R.id.recipe_detail_swipe);
-        viewPager.setAdapter(recipeDetailPagerAdapter);
+
+
+        final RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
+        Call<ResponseBody> responseBodyCall = recipeApi.getRecipeById(recipeId);
+
+        handleResponse(responseBodyCall);
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_recipe_detail, menu);
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -48,5 +55,36 @@ public class RecipeDetailActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void handleResponse(Call<ResponseBody> responseBodyCall) {
+        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    Bundle bundle = new Bundle();
+                    JSONObject recipeObject = new JSONObject(response.body().string());
+                    bundle.putString("recipeDetail", recipeObject.toString());
+
+                    RecipeDetailPagerAdapter recipeDetailPagerAdapter =
+                            new RecipeDetailPagerAdapter(getSupportFragmentManager(), bundle);
+
+                    ViewPager viewPager = (ViewPager) findViewById(R.id.recipe_detail_swipe);
+                    viewPager.setAdapter(recipeDetailPagerAdapter);
+
+                } catch (IOException e) {
+                    Log.e(TAG, "handleResponse: IOException: " + e.getMessage());
+                } catch (JSONException e) {
+                    Log.e(TAG, "handleResponse: JSONException: " + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
     private String recipeId = "";
+    private static final String TAG = "RecipeDetailActivity: ";
 }

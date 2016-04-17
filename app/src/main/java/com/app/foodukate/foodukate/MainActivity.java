@@ -34,18 +34,26 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String query = handleIntent(getIntent());
         String recipe_name = getIntent().getStringExtra("recipe_name");
         String searchBy = "";
-        if(query != null) {
-            searchBy = query;
-        } else if(recipe_name != null) {
+
+        if(recipe_name != null) {
             searchBy = recipe_name;
         } else {
             searchBy = null;
         }
 
         searchRecipe(searchBy);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        String query = handleIntent(getIntent());
+
+        if(query != null) {
+            searchRecipe(query);
+        }
     }
 
     @Override
@@ -122,8 +130,6 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction.add(R.id.recipe_fragment_container, fragment);
         fragmentTransaction.commit();
     }
-
-
 
     private static final String TAG = "MainActivity: ";
 
