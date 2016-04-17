@@ -6,13 +6,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/recipe_detail_image"
-                android:layout_width="match_parent"
-                android:layout_height="380dp"
-                android:src="@drawable/foodukate_main_e"
-                android:scaleType="centerCrop"
-                />
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/recipe_detail_image"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"/>
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/recipe_detail_swipe"

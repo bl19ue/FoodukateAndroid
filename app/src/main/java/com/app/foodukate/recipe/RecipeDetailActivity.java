@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.app.foodukate.client.RestService;
 import com.app.foodukate.foodukate.BaseActivity;
 import com.app.foodukate.foodukate.R;
+import com.app.foodukate.volley.VolleySingleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,8 +66,9 @@ public class RecipeDetailActivity extends BaseActivity {
                 try {
                     Bundle bundle = new Bundle();
                     JSONObject recipeObject = new JSONObject(response.body().string());
-                    bundle.putString("recipeDetail", recipeObject.toString());
-
+                    JSONObject recipeDetailData = recipeObject.getJSONObject("recipe").getJSONObject("data");
+                    loadImage(recipeDetailData.getString("imgUrl"));
+                    bundle.putString("recipeDetail", recipeDetailData.toString());
                     RecipeDetailPagerAdapter recipeDetailPagerAdapter =
                             new RecipeDetailPagerAdapter(getSupportFragmentManager(), bundle);
 
@@ -83,6 +88,12 @@ public class RecipeDetailActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void loadImage(String imageURL){
+        final NetworkImageView recipeDetailImage = (NetworkImageView) this.findViewById(R.id.recipe_detail_image);
+        ImageLoader imageLoader = VolleySingleton.getInstance().getImageLoader();
+        recipeDetailImage.setImageUrl(imageURL, imageLoader);
     }
 
     private String recipeId = "";

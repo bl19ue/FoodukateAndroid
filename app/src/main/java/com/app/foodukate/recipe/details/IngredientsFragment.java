@@ -43,8 +43,7 @@ public class IngredientsFragment extends Fragment {
         JSONObject recipeDetail = null;
         try {
             recipeDetail = new JSONObject(getArguments().getString("recipeDetail"));
-            JSONArray data = recipeDetail.getJSONObject("recipe").getJSONArray("data");
-            JSONArray ingredients = data.getJSONObject(0).getJSONArray("ingredients");
+            JSONArray ingredients = recipeDetail.getJSONArray("ingredients");
 
             String[] ingredientsList = new String[ingredients.length()];
             for(int i=0;i<ingredients.length();i++) {
