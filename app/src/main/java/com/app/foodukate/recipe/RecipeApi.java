@@ -17,6 +17,9 @@ public interface RecipeApi {
     @GET("recipes/")
     public void getAllRecipes(Callback<Recipe> response);
 
+    @GET("recipes/recommended/email/{email}")
+    public Call<ResponseBody> getRecommendedList(@Path("email") String email);
+
     @GET("recipes/search/name/{name}")
     public Call<ResponseBody> getRecipeByName(@Path("name") String name);
 

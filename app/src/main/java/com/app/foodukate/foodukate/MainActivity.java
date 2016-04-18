@@ -39,12 +39,12 @@ public class MainActivity extends BaseActivity {
         String searchBy = "";
 
         if(recipe_name != null) {
-            searchBy = recipe_name;
+            searchRecipe("name", recipe_name);
         } else {
-            searchBy = null;
+            searchRecipe("email", "sudh2@gmail.com");
         }
 
-        searchRecipe(searchBy);
+
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity {
         String query = handleIntent(getIntent());
 
         if(query != null) {
-            searchRecipe(query);
+            searchRecipe("name", query);
         }
     }
 
@@ -87,12 +87,17 @@ public class MainActivity extends BaseActivity {
         return null;
     }
 
-    private void searchRecipe(String searchBy) {
+    private void searchRecipe(String searchBy, String query) {
         final RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
-        if(searchBy == null) {
+        if(query == null) {
             attachFragment(null);
         } else {
-            Call<ResponseBody> recipes = recipeApi.getRecipeByName(searchBy);
+            Call<ResponseBody> recipes = null;
+            if(searchBy.equals("name")) {
+                recipes = recipeApi.getRecipeByName(query);
+            } else {
+                recipes = recipeApi.getRecommendedList(query);
+            }
 
             recipes.enqueue(new Callback<ResponseBody>() {
                 @Override
