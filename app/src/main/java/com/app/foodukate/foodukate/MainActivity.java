@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -120,10 +121,13 @@ public class MainActivity extends BaseActivity {
 
     private void attachFragment(Bundle bundle) {
         FragmentManager fragmentManager = getFragmentManager();
+        if(currentFragment != null) {
+            fragmentManager.beginTransaction().remove(currentFragment).commit();
+        }
         // Or: FragmentManager fragmentManager = getSupportFragmentManager()
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        RecipeListFragment fragment = new RecipeListFragment();
-
+        Fragment fragment = new RecipeListFragment();
+        currentFragment = fragment;
         if(bundle != null) {
             fragment.setArguments(bundle);
         }
@@ -131,7 +135,6 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction.commit();
     }
 
+    private static Fragment currentFragment = null;
     private static final String TAG = "MainActivity: ";
-
-
 }
