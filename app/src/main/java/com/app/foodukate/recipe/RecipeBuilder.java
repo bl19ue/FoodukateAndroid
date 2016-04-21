@@ -11,6 +11,7 @@ public class RecipeBuilder {
     String _id;
     String name;
     String source;
+    String rating;
     String imageUrl;
     String cookingTime;
     String thumbnailUrl;
@@ -44,6 +45,11 @@ public class RecipeBuilder {
 
     public RecipeBuilder withSource(String source) {
         this.source = source;
+        return this;
+    }
+
+    public RecipeBuilder withRating(String rating) {
+        this.rating = rating;
         return this;
     }
 

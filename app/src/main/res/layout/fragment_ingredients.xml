@@ -1,14 +1,40 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.app.foodukate.recipe.details.IngredientsFragment">
+
+    <TextView
+        android:id="@+id/ingredients_header"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="INGREDIENTS"
+        android:textColor="@color/white"
+        android:textScaleX="1"
+        android:textSize="18sp"
+        android:typeface="sans"
+        android:fontFamily="sans-serif-condensed"/>
+
+    <TextView
+        android:id="@+id/ingredients_servings"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/ingredients_header"
+        android:gravity="center"
+        android:background="@color/gray"
+        android:text="Serving - "
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="italic"/>
 
     <ListView
         android:id="@+id/ingredients_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/list_background">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ingredients_servings"
+        android:background="@color/list_background"></ListView>
 
-    </ListView>
-
-</FrameLayout>
+</RelativeLayout>

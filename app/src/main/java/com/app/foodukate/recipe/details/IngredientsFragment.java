@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.app.foodukate.foodukate.R;
 
@@ -40,6 +41,7 @@ public class IngredientsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_ingredients, container, false);
 
+        TextView ingredientServings = (TextView) view.findViewById(R.id.ingredients_servings);
         ListView ingredientsListView = (ListView) view.findViewById(R.id.ingredients_list);
         JSONObject recipeDetail = null;
         try {
@@ -51,16 +53,14 @@ public class IngredientsFragment extends Fragment {
             try {
                 JSONArray ingredientsJSONList = recipeDetail.getJSONArray("ingredients");
                 List<String> ingredientsArrayList = new ArrayList<>();
+                String numberOfServings = recipeDetail.getString("numberOfServings");
+                ingredientServings.append(numberOfServings);
 
-//                String[] ingredientsList = new String[ingredients.length()];
                 for(int i=0;i<ingredientsJSONList.length();i++) {
                     ingredientsArrayList.add(ingredientsJSONList.getString(i));
                 }
 
                 IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(getActivity(), ingredientsArrayList);
-
-//                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-//                        android.R.layout.simple_list_item_1, ingredientsList);
 
                 ingredientsListView.setAdapter(ingredientsAdapter);
 

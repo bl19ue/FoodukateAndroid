@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -67,7 +68,8 @@ public class RecipeDetailActivity extends BaseActivity {
                     Bundle bundle = new Bundle();
                     JSONObject recipeObject = new JSONObject(response.body().string());
                     JSONObject recipeDetailData = recipeObject.getJSONObject("recipe").getJSONObject("data");
-                    loadImage(recipeDetailData.getString("imgUrl"));
+                    loadImageandText(recipeDetailData);
+
                     bundle.putString("recipeDetail", recipeDetailData.toString());
                     RecipeDetailPagerAdapter recipeDetailPagerAdapter =
                             new RecipeDetailPagerAdapter(getSupportFragmentManager(), bundle);
@@ -90,10 +92,23 @@ public class RecipeDetailActivity extends BaseActivity {
         });
     }
 
-    private void loadImage(String imageURL){
+    private void loadImageandText(JSONObject recipeDetail){
         final NetworkImageView recipeDetailImage = (NetworkImageView) this.findViewById(R.id.recipe_detail_image);
-        ImageLoader imageLoader = VolleySingleton.getInstance().getImageLoader();
-        recipeDetailImage.setImageUrl(imageURL, imageLoader);
+        final TextView recipeDetailName = (TextView) this.findViewById(R.id.recipe_detail_name);
+        final TextView recipeDetailSource = (TextView) this.findViewById(R.id.recipe_detail_source);
+        final TextView recipeDetailRating = (TextView) this.findViewById(R.id.recipe_detail_rating);
+
+        try{
+            ImageLoader imageLoader = VolleySingleton.getInstance().getImageLoader();
+            recipeDetailImage.setImageUrl(recipeDetail.getString("imgUrl"), imageLoader);
+            recipeDetailName.setText(recipeDetail.getString("name"));
+            recipeDetailRating.setText(recipeDetail.getString("rating"));
+            recipeDetailSource.setText("by " + recipeDetail.getJSONObject("source").getString("sourceDisplayName"));
+
+        }catch (JSONException e) {
+            Log.e(TAG, "handleResponse: JSONException: " + e.getMessage());
+        }
+
     }
 
     private String recipeId = "";
