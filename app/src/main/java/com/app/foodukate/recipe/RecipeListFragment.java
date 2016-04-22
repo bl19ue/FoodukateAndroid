@@ -15,6 +15,7 @@ import com.app.foodukate.foodukate.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -55,11 +56,20 @@ public class RecipeListFragment extends Fragment {
                 ArrayList<Recipe> recipeArrayList = new ArrayList<>();
 
                 for(int i=0;i<recipeJSONList.length();i++) {
-                    String name = recipeJSONList.getJSONObject(i).getString("name");
-                    String imgUrl = recipeJSONList.getJSONObject(i).getString("imgUrl");
-                    String id = recipeJSONList.getJSONObject(i).getString("id");
+                    JSONObject recipe = recipeJSONList.getJSONObject(i);
+                    String name = recipe.getString("name");
+                    String imgUrl = recipe.getString("imgUrl");
+                    String id = recipe.getString("id");
+                    String rating = recipe.getString("rating");
+                    String source = "by ";
+                    source += recipe.getJSONObject("source").getString("sourceDisplayName");
 
-                    Recipe thisRecipe = new RecipeBuilder().withRecipeId(id).withName(name).withImageUrl(imgUrl).build();
+                    Recipe thisRecipe = new RecipeBuilder().withRecipeId(id)
+                            .withName(name)
+                            .withImageUrl(imgUrl)
+                            .withRating(rating)
+                            .withSource(source)
+                            .build();
                     recipeArrayList.add(thisRecipe);
                 }
                 RecipeListAdapter recipeListAdapter = new RecipeListAdapter(getActivity(), recipeArrayList);

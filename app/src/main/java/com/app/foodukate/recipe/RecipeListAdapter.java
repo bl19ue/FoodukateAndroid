@@ -60,6 +60,8 @@ public class RecipeListAdapter extends BaseAdapter {
 
         final Recipe recipe = recipeList.get(position);
         myViewHolder.recipeName.setText(recipe.getName());
+        myViewHolder.recipeRating.setText(recipe.getRating());
+        myViewHolder.recipeSource.setText(recipe.getSource());
         myViewHolder.recipeImage.setImageUrl(recipe.getImageUrl(), imageLoader);
         myViewHolder.recipeImage.setOnClickListener(new RecipeItemClickListener(recipe.getRecipeId()));
 
@@ -73,11 +75,13 @@ public class RecipeListAdapter extends BaseAdapter {
     private ImageLoader imageLoader;
 
     private class MyViewHolder {
-        TextView recipeName;
+        TextView recipeName, recipeRating, recipeSource;
         NetworkImageView recipeImage;
 
         public MyViewHolder(View item) {
             recipeName = (TextView) item.findViewById(R.id.recipe_name);
+            recipeSource = (TextView) item.findViewById(R.id.recipe_source);
+            recipeRating = (TextView) item.findViewById(R.id.recipe_rating);
             recipeImage = (NetworkImageView) item.findViewById(R.id.recipe_image);
         }
     }

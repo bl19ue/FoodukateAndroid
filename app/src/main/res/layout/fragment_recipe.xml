@@ -1,6 +1,129 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.app.foodukate.recipe.details.RecipeFragment">
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/recipe_description_header"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="DETAILS"
+        android:textColor="@color/white"
+        android:textScaleX="1"
+        android:textSize="18sp"
+        android:typeface="sans"
+        android:fontFamily="sans-serif-condensed"/>
+
+    <TextView
+        android:id="@+id/recipe_source_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/textview_border"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp"
+        android:text="URL: "
+        android:fontFamily="sans-serif-light" />
+
+    <TextView
+        android:id="@+id/recipe_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/textview_border"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp"
+        android:text="Category: "
+        android:visibility="gone"
+        android:fontFamily="sans-serif-light"/>
+
+    <TextView
+        android:id="@+id/recipe_course"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/textview_border"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp"
+        android:text="Course: "
+        android:visibility="gone"
+        android:fontFamily="sans-serif-light"/>
+
+    <TextView
+        android:id="@+id/recipe_cuisine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipe_course"
+        android:background="@drawable/textview_border"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp"
+        android:text="Cuisine: "
+        android:visibility="gone"
+        android:fontFamily="sans-serif-light"/>
+
+    <TextView
+        android:id="@+id/recipe_steps_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/list_background"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp"
+        android:text="Steps: "
+        android:visibility="gone"
+        android:fontFamily="sans-serif-light"/>
+
+    <TextView
+        android:id="@+id/recipe_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/list_background"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:text=""
+        android:fontFamily="sans-serif-light"/>
+
+    <!--<ListView-->
+        <!--android:id="@+id/recipe_category_list"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/list_background"></ListView>-->
+
+    <!--<ListView-->
+        <!--android:id="@+id/recipe_cuisine_list"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/list_background"></ListView>-->
+
+    <!--<ListView-->
+        <!--android:id="@+id/recipe_course_list"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/list_background"></ListView>-->
+
+</LinearLayout>

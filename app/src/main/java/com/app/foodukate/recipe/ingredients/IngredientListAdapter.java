@@ -46,7 +46,7 @@ public class IngredientListAdapter extends BaseAdapter {
         MyViewHolder myViewHolder;
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.recipe_row, parent, false);
+            convertView = layoutInflater.inflate(R.layout.ingredient_add_row, parent, false);
             myViewHolder = new MyViewHolder(convertView);
             convertView.setTag(myViewHolder);
         } else {

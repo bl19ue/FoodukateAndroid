@@ -13,7 +13,54 @@
             android:layout_height="240dp"
             android:scaleType="centerCrop"/>
 
-            <android.support.v4.view.ViewPager
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/recipe_footer"
+            android:orientation="vertical"
+            android:layout_below="@+id/recipe_detail_image"
+            android:layout_marginTop="-70dp"
+            android:paddingLeft="25dp">
+
+            <TextView
+                android:id="@+id/recipe_detail_name"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="24sp"
+                android:paddingTop="6dp"
+                android:textColor="@color/white"
+                android:typeface="serif"
+                android:layout_weight="2"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/recipe_detail_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:textColor="@color/white"
+                    android:textStyle="italic"
+                    android:textSize="12sp"
+                    />
+
+                <TextView
+                    android:id="@+id/recipe_detail_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:layout_gravity="right"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <android.support.v4.view.ViewPager
                 android:id="@+id/recipe_detail_swipe"
                 android:layout_below="@+id/recipe_detail_image"
                 android:layout_width="match_parent"
