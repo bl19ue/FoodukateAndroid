@@ -25,4 +25,7 @@ public interface RecipeApi {
 
     @GET("recipes/search/id/{recipeId}")
     public Call<ResponseBody> getRecipeById(@Path("recipeId") String recipeId);
+
+    @GET("ingredients/search/{name}")
+    public Call<ResponseBody> getIngredientsByName(@Path("name") String name);
 }

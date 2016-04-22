@@ -18,4 +18,13 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Search</string>
     <string name="camera">Camera</string>
+    <string name="title_activity_add_recipe">AddRecipeActivity</string>
+    <string name="name">Name</string>
+    <string name="uploadImage">Upload Image</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="course">Course</string>
+    <string name="steps">Steps</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="addIngredients">Add Ingredients</string>
+
 </resources>
