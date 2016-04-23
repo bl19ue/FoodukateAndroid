@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.app.foodukate.foodukate"
@@ -28,4 +29,14 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.android.support:multidex:1.0.0'
+
+    // Dependency for Google Sign-In
+    compile 'com.google.android.gms:play-services-auth:8.4.0'
+    compile 'com.google.api-client:google-api-client:1.19.1'
+    compile 'com.google.apis:google-api-services-plusDomains:v1-rev7-1.17.0-rc'
+    compile 'org.apache.httpcomponents:httpcore:4.4.1'
+    compile 'org.apache.httpcomponents:httpclient:4.5'
 }
+
+apply plugin: 'com.google.gms.google-services'

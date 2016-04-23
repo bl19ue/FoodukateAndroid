@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "foodukate-d4d2b",
+    "project_number": "90069306861",
+    "name": "FoodUKate"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90069306861:android:ea64d6dd82410cfb",
+        "client_id": "android:com.app.foodukate.foodukate",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.app.foodukate.foodukate",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90069306861-omvnrb2806nrfi72u6uqroivlng3hvat.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.foodukate.foodukate",
+            "certificate_hash": "CA1459F89EDE5FC757755FE4702357471131A86F"
+          }
+        },
+        {
+          "client_id": "90069306861-keo26b5v04j0q9uuarmirh3nsfhlengc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
