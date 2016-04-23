@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.app.foodukate.recipe.AddRecipeActivity;
 import com.app.foodukate.recipe.RecipeDetailActivity;
 
 public class LoginActivity extends BaseActivity {
@@ -28,8 +29,10 @@ public class LoginActivity extends BaseActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(mainActivityIntent);
+//                Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+//                startActivity(mainActivityIntent);
+                Intent addRecipeIntent = new Intent(LoginActivity.this, AddRecipeActivity.class);
+                startActivity(addRecipeIntent);
             }
         });
 

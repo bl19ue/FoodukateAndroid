@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.app.foodukate.foodukate.R;
+import com.app.foodukate.recipe.AddRecipeActivity;
 
 import java.util.List;
 
@@ -64,7 +65,8 @@ public class IngredientListAdapter extends BaseAdapter {
         myViewHolder.removeIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO remove item and update list
+                AddRecipeActivity.savedIngredientList.remove(ingredient);
+                AddRecipeActivity.ingredientListAdapter.notifyDataSetChanged();
             }
         });
 
