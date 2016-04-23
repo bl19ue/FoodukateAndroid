@@ -2,6 +2,7 @@ package com.app.foodukate.recipe;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -126,8 +128,9 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+
     public void createIngredientsDialog(final Context activity) {
-        Button addIngredientButton = (Button) ingredientDialog.findViewById(R.id.add_ingredient_button);
+        ImageButton addIngredientButton = (ImageButton) ingredientDialog.findViewById(R.id.add_ingredient_button);
 
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
