@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.app.foodukate.recipe.AddRecipeActivity;
 import com.app.foodukate.recipe.RecipeDetailActivity;
 
 public class LoginActivity extends BaseActivity {

@@ -57,16 +57,26 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
         recipeCourse = (EditText) findViewById(R.id.new_recipe_course);
         recipeSteps = (EditText) findViewById(R.id.new_recipe_steps);
 
-        uploadRecipeButton = (Button) findViewById(R.id.new_recipe_upload_button);
+        uploadRecipeButton = (Button) findViewById(R.id.new_recipe_upload_image_button);
+        uploadRecipeButton.setOnClickListener(this);
+
         newIngredientButton = (Button) findViewById(R.id.new_recipe_ingredients_button);
+        newIngredientButton.setOnClickListener(this);
 
         recipeImage = (ImageView) findViewById(R.id.new_recipe_image);
 
-        ingredientsListView = (ListView) findViewById(R.id.new_recipe_ingredients_list);
-
-        ingredientName = (AutoCompleteTextView) findViewById(R.id.ingredient_name);
-
         ingredientListAdapter = new IngredientListAdapter(this, savedIngredientList);
+
+        ingredientDialog = new Dialog(this);
+
+        ingredientDialog.setContentView(R.layout.dialog_ingredients);
+        ingredientDialog.setTitle("Add ingredients");
+
+
+        ingredientName = (AutoCompleteTextView) ingredientDialog.findViewById(R.id.ingredient_name);
+
+        ingredientsListView = (ListView) ingredientDialog.findViewById(R.id.new_recipe_ingredients_list);
+        ingredientsListView.setAdapter(ingredientListAdapter);
     }
 
     @Override
@@ -94,7 +104,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.new_recipe_upload_button: {
+            case R.id.new_recipe_upload_image_button: {
                 Intent intent = new Intent();
                 // Show only images, no videos or anything else
                 intent.setType("image/*");
@@ -105,10 +115,6 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
             }
 
             case R.id.new_recipe_ingredients_button: {
-                break;
-            }
-
-            case R.id.add_ingredient_button: {
                 createIngredientsDialog(AddRecipeActivity.this);
                 break;
             }
@@ -116,25 +122,22 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void createIngredientsDialog(final Context activity) {
-        final Dialog ingredientDialog = new Dialog(activity);
+        Button addIngredientButton = (Button) ingredientDialog.findViewById(R.id.add_ingredient_button);
 
-        ingredientDialog.setContentView(R.layout.dialog_ingredients);
-        ingredientDialog.setTitle("Add ingredients");
-
-        Button addIngredientButton = (Button) findViewById(R.id.add_ingredient_button);
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!ingredientNameChanged) {
+                if (!ingredientNameChanged) {
                     String name = ingredientName.getText().toString();
                     Ingredient ingredient = null;
-                    for(int i=0;i<ingredientArrayList.size();i++) {
-                        if(ingredientArrayList.get(i).getName().equals(name)) {
+                    for (int i = 0; i < ingredientArrayList.size(); i++) {
+                        if (ingredientArrayList.get(i).getName().equals(name)) {
                             ingredient = ingredientArrayList.get(i);
+                            break;
                         }
                     }
 
-                    if(ingredient != null) {
+                    if (ingredient != null) {
                         savedIngredientList.add(ingredient);
                         ingredientListAdapter.notifyDataSetChanged();
                         ingredientName.clearListSelection();
@@ -155,7 +158,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                ingredientsNameList = new ArrayList<String>();
             }
 
             @Override
@@ -176,6 +179,8 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                 ingredientName.dismissDropDown();
             }
         });
+
+        ingredientDialog.show();
     }
 
     @Override
@@ -221,6 +226,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 
                     ingredientName.setAdapter(new ArrayAdapter<String>(AddRecipeActivity.this,
                             android.R.layout.simple_dropdown_item_1line, ingredientsNameList));
+                    ingredientName.showDropDown();
 
                 } catch (JSONException e) {
                     Log.e(TAG, "handleIngredientsResponse: JSONException: " + e.getMessage());
@@ -253,12 +259,15 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 
     private Bitmap bitmap = null;
 
+    private Dialog ingredientDialog;
+
     private final int PICK_IMAGE_REQUEST = 1;
     private final String TAG = "AddRecipeActivity: ";
     private ArrayList<String> ingredientsNameList;
     private ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();;
-    private ArrayList<Ingredient> savedIngredientList = new ArrayList<>();
     private final RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
     private boolean ingredientNameChanged = true;
-    private IngredientListAdapter ingredientListAdapter;
+
+    public static ArrayList<Ingredient> savedIngredientList = new ArrayList<>();
+    public static IngredientListAdapter ingredientListAdapter;
 }
