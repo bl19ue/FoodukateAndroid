@@ -29,10 +29,8 @@ public class LoginActivity extends BaseActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
-//                startActivity(mainActivityIntent);
-                Intent addRecipeIntent = new Intent(LoginActivity.this, AddRecipeActivity.class);
-                startActivity(addRecipeIntent);
+                Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(mainActivityIntent);
             }
         });
 
