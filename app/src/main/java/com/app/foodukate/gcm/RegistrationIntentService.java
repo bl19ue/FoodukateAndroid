@@ -19,7 +19,6 @@ package com.app.foodukate.gcm;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -27,15 +26,10 @@ import android.util.Log;
 import com.app.foodukate.client.RestService;
 import com.app.foodukate.foodukate.R;
 import com.app.foodukate.notification.GcmBody;
-import com.app.foodukate.notification.UserApi;
-import com.app.foodukate.recipe.RecipeApi;
+import com.app.foodukate.notification.UserCallApi;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -101,7 +95,7 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        final UserApi userApi = (UserApi) RestService.getService(UserApi.class);
+        final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
         GcmBody body = new GcmBody();
         body.setGcmToken(token);
         body.setUserId("5709a2c6083654195f0e4111");

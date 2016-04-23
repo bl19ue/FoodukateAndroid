@@ -9,7 +9,7 @@ import retrofit2.http.PUT;
 /**
  * Created by sudhakarkamanboina on 4/19/16.
  */
-public interface UserApi {
+public interface UserCallApi {
 
     @PUT("users/")
     public Call<ResponseBody> updateUser(@Body GcmBody body);
