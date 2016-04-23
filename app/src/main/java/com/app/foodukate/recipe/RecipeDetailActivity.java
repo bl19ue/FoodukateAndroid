@@ -69,6 +69,7 @@ public class RecipeDetailActivity extends BaseActivity {
                     JSONObject recipeObject = new JSONObject(response.body().string());
                     JSONObject recipeDetailData = recipeObject.getJSONObject("recipe").getJSONObject("data");
                     loadImageandText(recipeDetailData);
+                    loadFollowStar();
 
                     bundle.putString("recipeDetail", recipeDetailData.toString());
                     RecipeDetailPagerAdapter recipeDetailPagerAdapter =
@@ -108,6 +109,10 @@ public class RecipeDetailActivity extends BaseActivity {
         }catch (JSONException e) {
             Log.e(TAG, "handleResponse: JSONException: " + e.getMessage());
         }
+
+    }
+
+    private void loadFollowStar(){
 
     }
 
