@@ -1,8 +1,6 @@
 package com.app.foodukate.foodukate;
 
 import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,19 +11,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
-import com.app.foodukate.client.RestService;
 import com.app.foodukate.common.Environment;
 import com.app.foodukate.menu_scanner.OCRApi;
 import com.app.foodukate.menu_scanner.OCRService;
 import com.app.foodukate.menu_scanner.ScannedListActivity;
-import com.app.foodukate.recipe.RecipeApi;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -37,12 +38,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+
+    GoogleApiClient mGoogleApiClient;
+    private static final int SIGN_IN_CODE = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this , this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 
     @Override
@@ -74,16 +91,34 @@ public class BaseActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, 0);
                 break;
             }
-            default: break;
+            default:
+                break;
         }
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+            case R.id.action_settings:
+                return true;
+            case R.id.sign_out:
+                signOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
+
+
+    // [START signOut]
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Intent login = new Intent(BaseActivity.this, LoginActivity.class);
+                        startActivity(login);
+                        finish();
+                    }
+                });
+    }
+    // [END signOut]
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

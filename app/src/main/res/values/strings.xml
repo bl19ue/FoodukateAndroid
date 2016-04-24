@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_login"></string>
     <string name="main_activity"></string>
+    <string name="title_activity_build_profile"></string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -12,8 +13,8 @@
     <string name="title_activity_scanned_list"></string>
     <string name="title_activity_base"></string>
 
-    <string name="username">username</string>
-    <string name="password">password</string>
+    <string name="name">Name :</string>
+    <string name="email">Email :</string>
     <string name="login">login</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Search</string>
@@ -26,5 +27,22 @@
     <string name="steps">Steps</string>
     <string name="ingredients">Ingredients</string>
     <string name="addIngredients">Add Ingredients</string>
+
+    <string name="loading">Loading…</string>
+
+    <string name="sign_out">Sign Out</string>
+
+    <!-- Content Description for images -->
+    <string name="desc_google_icon">Google Logo</string>
+
+    <string name="title_text">FoodUKate</string>
+    <!-- Server Client ID.  Valid Web OAuth 2.0 Client ID obtained from https://console.developers.google.com/ -->
+    <string name="server_client_id">90069306861-a946af38mrln4tqna2t7l2rek5ep7m85.apps.googleusercontent.com</string>
+    <string name="interests">Interests :</string>
+    <string name="phone_no">Phone No :</string>
+    <string name="save">Save</string>
+    <string name="build_your_profile">Build Your Profile</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="comment">* select atleast one cuisine of interest</string>
 
 </resources>

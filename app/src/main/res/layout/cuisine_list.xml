@@ -1,0 +1,9 @@
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/checkedTextView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
+    android:textSize="13dp"
+    android:password="false" />
