@@ -37,6 +37,10 @@
             android:label="@string/title_activity_build_profile" >
         </activity>
         <activity
+            android:name="com.app.foodukate.user.UpdateProfile"
+            android:label="@string/title_activity_update_profile" >
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:label="@string/main_activity"
             android:launchMode="singleTop" >

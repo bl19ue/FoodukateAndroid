@@ -20,21 +20,19 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.google.android.gms:play-services-gcm:8.1.0'
-    compile 'com.android.support:design:23.1.1'
-
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.android.support:design:23.3.0'
     // Dependency for Google Sign-In
     compile 'com.google.android.gms:play-services-auth:8.4.0'
-    compile 'com.google.api-client:google-api-client:1.19.1'
-    compile 'com.google.apis:google-api-services-plusDomains:v1-rev7-1.17.0-rc'
 }
 
 apply plugin: 'com.google.gms.google-services'

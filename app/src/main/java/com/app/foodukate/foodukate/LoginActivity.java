@@ -136,7 +136,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInAccount acct = result.getSignInAccount();
             String personName = acct.getDisplayName();
             String personEmail = acct.getEmail();
-            String proficPic = acct.getPhotoUrl().toString();
+            String proficPic = "";
+            if(acct.getPhotoUrl()!=null) {
+                proficPic = acct.getPhotoUrl().toString();
+            }
             userEmail = personEmail;
             UserSingleton loginUser = UserSingleton.getInstance();
             loginUser.setName(personName);
