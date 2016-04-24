@@ -1,5 +1,6 @@
 package com.app.foodukate.recipe;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,12 +8,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.app.foodukate.client.RestService;
 import com.app.foodukate.foodukate.BaseActivity;
+import com.app.foodukate.foodukate.MainActivity;
 import com.app.foodukate.foodukate.R;
 import com.app.foodukate.volley.VolleySingleton;
 
@@ -37,7 +40,13 @@ public class RecipeDetailActivity extends BaseActivity {
         // Send GET request to get the recipe detail
         Log.i(TAG, "onCreate: recipe_id: " + this.recipeId);
 
-
+        Button login = (Button) findViewById(R.id.follow_user_button);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
 
         final RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
         Call<ResponseBody> responseBodyCall = recipeApi.getRecipeById(recipeId);
@@ -69,6 +78,7 @@ public class RecipeDetailActivity extends BaseActivity {
                     JSONObject recipeObject = new JSONObject(response.body().string());
                     JSONObject recipeDetailData = recipeObject.getJSONObject("recipe").getJSONObject("data");
                     loadImageandText(recipeDetailData);
+                    loadFollowStar();
 
                     bundle.putString("recipeDetail", recipeDetailData.toString());
                     RecipeDetailPagerAdapter recipeDetailPagerAdapter =
@@ -108,6 +118,10 @@ public class RecipeDetailActivity extends BaseActivity {
         }catch (JSONException e) {
             Log.e(TAG, "handleResponse: JSONException: " + e.getMessage());
         }
+
+    }
+
+    private void loadFollowStar(){
 
     }
 
