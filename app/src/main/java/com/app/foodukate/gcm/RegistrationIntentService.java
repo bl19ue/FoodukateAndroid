@@ -110,9 +110,6 @@ public class RegistrationIntentService extends IntentService {
                     else{
                             Log.e(TAG,response.errorBody().toString());
                     }
-                    //JSONArray recipes = recipesResponse.getJSONObject("recipes").getJSONArray("data");
-
-
                 } catch (IOException e) {
                     Log.e(TAG, "onResponse: IOException: " + e.toString());
                 }

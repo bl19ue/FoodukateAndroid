@@ -17,6 +17,8 @@ import com.app.foodukate.client.RestService;
 import com.app.foodukate.foodukate.BaseActivity;
 import com.app.foodukate.foodukate.MainActivity;
 import com.app.foodukate.foodukate.R;
+import com.app.foodukate.notification.FollowBody;
+import com.app.foodukate.notification.UserCallApi;
 import com.app.foodukate.volley.VolleySingleton;
 
 import org.json.JSONException;
@@ -44,7 +46,31 @@ public class RecipeDetailActivity extends BaseActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
+                FollowBody fb = new FollowBody();
+                fb.setObjectId1("");
+                fb.setObjectId2("");
+                Call<ResponseBody> response = userApi.followUser(fb);
+                response.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        try {
+                            if (response.isSuccessful()) {
+                                Log.e(TAG, response.body().string());
+                            }
+                            else{
+                                Log.e(TAG,response.errorBody().toString());
+                            }
+                        } catch (IOException e) {
+                            Log.e(TAG, "onResponse: IOException: " + e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e(TAG, "Enqueue: " + t.getMessage());
+                    }
+                });
             }
         });
 

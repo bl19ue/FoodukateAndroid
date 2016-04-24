@@ -13,4 +13,7 @@ public interface UserCallApi {
 
     @PUT("users/")
     public Call<ResponseBody> updateUser(@Body GcmBody body);
+
+    @PUT("users/follow")
+    public Call<ResponseBody> followUser(@Body FollowBody body);
 }
