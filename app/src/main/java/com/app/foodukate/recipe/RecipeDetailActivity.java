@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -43,7 +44,24 @@ public class RecipeDetailActivity extends BaseActivity {
         // Send GET request to get the recipe detail
         Log.i(TAG, "onCreate: recipe_id: " + this.recipeId);
 
+        ImageButton shareBtn = (ImageButton) findViewById(R.id.menu_item_share);
+        ImageButton followBtn = (ImageButton) findViewById(R.id.menu_item_follow);
         ImageButton followUserBtn = (ImageButton) findViewById(R.id.follow_user_button);
+
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RecipeDetailActivity.this, "Share Btn Clicked", Toast.LENGTH_SHORT);
+            }
+        });
+
+        followBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RecipeDetailActivity.this, "Follow Btn Clicked", Toast.LENGTH_SHORT);
+            }
+        });
+
         followUserBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
