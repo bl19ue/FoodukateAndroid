@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -42,8 +43,8 @@ public class RecipeDetailActivity extends BaseActivity {
         // Send GET request to get the recipe detail
         Log.i(TAG, "onCreate: recipe_id: " + this.recipeId);
 
-        Button login = (Button) findViewById(R.id.follow_user_button);
-        login.setOnClickListener(new View.OnClickListener() {
+        ImageButton followUserBtn = (ImageButton) findViewById(R.id.follow_user_button);
+        followUserBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
@@ -148,6 +149,8 @@ public class RecipeDetailActivity extends BaseActivity {
     }
 
     private void loadFollowStar(){
+
+        //TO DO
 
     }
 
