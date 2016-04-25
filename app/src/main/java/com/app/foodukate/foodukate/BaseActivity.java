@@ -124,10 +124,9 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        this.image = (Bitmap) data.getExtras().get("data");
-        File file = imageToFile(this.image);
-
         try {
+            this.image = (Bitmap) data.getExtras().get("data");
+            File file = imageToFile(this.image);
             // create RequestBody instance from file
             RequestBody requestFile =
                     RequestBody.create(MediaType.parse("multipart/form-data"), file);
