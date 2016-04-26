@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.app.foodukate.gcm;
+package com.app.foodukate.foodukate;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -25,6 +25,7 @@ import android.util.Log;
 
 import com.app.foodukate.client.RestService;
 import com.app.foodukate.foodukate.R;
+import com.app.foodukate.gcm.QuickstartPreferences;
 import com.app.foodukate.notification.GcmBody;
 import com.app.foodukate.notification.UserCallApi;
 import com.google.android.gms.gcm.GcmPubSub;
