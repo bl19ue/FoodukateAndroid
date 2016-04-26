@@ -4,6 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.app.foodukate.recipe.RecipeDetailActivity">
 
-    <include layout="@layout/activity_recipe_detail_content" />
+    <include layout="@layout/content_recipe_detail" />
 
 </android.support.design.widget.CoordinatorLayout>
