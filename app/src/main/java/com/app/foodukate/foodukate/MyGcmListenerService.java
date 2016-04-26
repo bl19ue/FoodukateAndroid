@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.app.foodukate.gcm;
+package com.app.foodukate.foodukate;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
