@@ -5,23 +5,23 @@ package com.app.foodukate.notification;
  */
 public class FollowBody {
 
-    private String ObjectId1;
-    private String ObjectId2;
+    private String loggedInUsrEmail;
+    private String otherUsrEmail;
 
 
-    public String getObjectId1() {
-        return ObjectId1;
+    public String getLoggedInUsrEmail() {
+        return loggedInUsrEmail;
     }
 
-    public void setObjectId1(String objectId1) {
-        ObjectId1 = objectId1;
+    public void setLoggedInUsrEmail(String loggedInUsrEmail) {
+        this.loggedInUsrEmail = loggedInUsrEmail;
     }
 
-    public String getObjectId2() {
-        return ObjectId2;
+    public String getOtherUsrEmail() {
+        return otherUsrEmail;
     }
 
-    public void setObjectId2(String objectId2) {
-        ObjectId2 = objectId2;
+    public void setOtherUsrEmail(String otherUsrEmail) {
+        this.otherUsrEmail = otherUsrEmail;
     }
 }

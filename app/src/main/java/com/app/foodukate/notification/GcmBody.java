@@ -4,15 +4,15 @@ package com.app.foodukate.notification;
  * Created by sudhakarkamanboina on 4/19/16.
  */
 public class GcmBody {
-    private String userId;
+    private String userEmail;
     private String gcmToken;
 
-    public String getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getGcmToken() {

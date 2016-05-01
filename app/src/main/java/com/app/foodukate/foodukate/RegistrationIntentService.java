@@ -24,10 +24,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.app.foodukate.client.RestService;
-import com.app.foodukate.foodukate.R;
 import com.app.foodukate.gcm.QuickstartPreferences;
 import com.app.foodukate.notification.GcmBody;
 import com.app.foodukate.notification.UserCallApi;
+import com.app.foodukate.user.UserSingleton;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -99,7 +99,8 @@ public class RegistrationIntentService extends IntentService {
         final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
         GcmBody body = new GcmBody();
         body.setGcmToken(token);
-        body.setUserId("5709a2c6083654195f0e4111");
+        UserSingleton loginUser = UserSingleton.getInstance();
+        body.setUserEmail(loginUser.getEmail());
         Call<ResponseBody> response = userApi.updateUser(body);
         response.enqueue(new Callback<ResponseBody>() {
             @Override
