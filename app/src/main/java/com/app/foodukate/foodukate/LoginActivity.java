@@ -259,8 +259,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     }
                     else{
                         JSONObject userObj = userObject.getJSONObject(0);
-                        if(userObj.has("phoneNo")) {
-                            loginUser.setPhoneNo(userObj.get("phoneNo").toString());
+                        if(userObj.has("phoneno")) {
+                            loginUser.setPhoneNo(userObj.get("phoneno").toString());
                         }
                         JSONArray interests = (JSONArray) userObj.get("interests");
                         int i=0;

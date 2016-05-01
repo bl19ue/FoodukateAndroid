@@ -169,9 +169,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private void attachFragment(Bundle bundle) {
         FragmentManager fragmentManager = getFragmentManager();
-        if(currentFragment != null) {
-            fragmentManager.beginTransaction().remove(currentFragment).commit();
-        }
+//        if(currentFragment != null) {
+//            fragmentManager.beginTransaction().remove(currentFragment).commit();
+//        }
         // Or: FragmentManager fragmentManager = getSupportFragmentManager()
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = new RecipeListFragment();
@@ -179,7 +179,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         if(bundle != null) {
             fragment.setArguments(bundle);
         }
-        fragmentTransaction.add(R.id.recipe_fragment_container, fragment);
+        fragmentTransaction.replace(R.id.recipe_fragment_container, fragment);
         fragmentTransaction.commit();
     }
 
