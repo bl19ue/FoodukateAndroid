@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.foodukate.client.RestService;
+import com.app.foodukate.common.MultiSpinner;
 import com.app.foodukate.foodukate.R;
 import com.app.foodukate.recipe.ingredients.Ingredient;
 import com.app.foodukate.recipe.ingredients.IngredientListAdapter;
@@ -53,9 +55,12 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_add_recipe);
 
         recipeName = (EditText) findViewById(R.id.new_recipe_name);
-        recipeCuisine = (EditText) findViewById(R.id.new_recipe_cuisine);
-        recipeCourse = (EditText) findViewById(R.id.new_recipe_course);
+//        recipeCuisine = (EditText) findViewById(R.id.new_recipe_cuisine);
+//        recipeCourse = (EditText) findViewById(R.id.new_recipe_course);
         recipeSteps = (EditText) findViewById(R.id.new_recipe_steps);
+
+        recipeCuisineMulti = (MultiSpinner) findViewById(R.id.new_recipe_cuisine_multi);
+        recipeCuisineMulti.setItems(cuisines);
 
         uploadRecipeButton = (Button) findViewById(R.id.new_recipe_upload_image_button);
         uploadRecipeButton.setOnClickListener(this);
@@ -243,9 +248,11 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
     }
 
     private EditText recipeName;
-    private EditText recipeCuisine;
-    private EditText recipeCourse;
+//    private EditText recipeCuisine;
+//    private EditText recipeCourse;
     private EditText recipeSteps;
+
+    private MultiSpinner recipeCuisineMulti;
 
     private Button uploadRecipeButton;
     private Button newIngredientButton;
@@ -261,6 +268,10 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 
     private Dialog ingredientDialog;
 
+    private String[] cuisines = {"Asian","Barbecue","Greek","Mediterranean","Indian","Kid-Friendly",
+            "Thai","Mexican","Spanish","Japanese","American","Chinese","Italian",
+            "Southwestern","Moroccan","Cuban","English","French","Hungarian","German",
+            "Swedish","Hawaiian","Cajun & Creole","Portuguese","Irish","Southern & Soul Food"};
     private final int PICK_IMAGE_REQUEST = 1;
     private final String TAG = "AddRecipeActivity: ";
     private ArrayList<String> ingredientsNameList;

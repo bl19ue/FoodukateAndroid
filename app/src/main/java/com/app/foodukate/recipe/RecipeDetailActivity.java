@@ -1,14 +1,10 @@
 package com.app.foodukate.recipe;
 
-import android.content.Intent;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,10 +13,10 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.app.foodukate.client.RestService;
 import com.app.foodukate.foodukate.BaseActivity;
-import com.app.foodukate.foodukate.MainActivity;
 import com.app.foodukate.foodukate.R;
 import com.app.foodukate.notification.FollowBody;
 import com.app.foodukate.notification.UserCallApi;
+import com.app.foodukate.user.UserSingleton;
 import com.app.foodukate.volley.VolleySingleton;
 
 import org.json.JSONException;
@@ -34,6 +30,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RecipeDetailActivity extends BaseActivity {
+
+     String recipeSource=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +49,8 @@ public class RecipeDetailActivity extends BaseActivity {
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RecipeDetailActivity.this, "Share Btn Clicked", Toast.LENGTH_SHORT);
+                //Toast.makeText(RecipeDetailActivity.this, "Share Btn Clicked", Toast.LENGTH_SHORT);
+                UserSingleton loginUser = UserSingleton.getInstance();
             }
         });
 
@@ -65,10 +64,11 @@ public class RecipeDetailActivity extends BaseActivity {
         followUserBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UserSingleton loginUser = UserSingleton.getInstance();
                 final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
                 FollowBody fb = new FollowBody();
-                fb.setObjectId1("");
-                fb.setObjectId2("");
+                fb.setLoggedInUsrEmail(loginUser.getEmail());
+                fb.setOtherUsrEmail(recipeSource);
                 Call<ResponseBody> response = userApi.followUser(fb);
                 response.enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -122,6 +122,7 @@ public class RecipeDetailActivity extends BaseActivity {
                     Bundle bundle = new Bundle();
                     JSONObject recipeObject = new JSONObject(response.body().string());
                     JSONObject recipeDetailData = recipeObject.getJSONObject("recipe").getJSONObject("data");
+                    recipeSource = recipeDetailData.getString("source");
                     loadImageandText(recipeDetailData);
                     loadFollowStar();
 

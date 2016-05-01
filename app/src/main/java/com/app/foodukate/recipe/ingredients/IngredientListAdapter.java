@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -77,13 +78,13 @@ public class IngredientListAdapter extends BaseAdapter {
         EditText ingredientQuantity;
         Spinner ingredientLabel;
         TextView ingredientName;
-        Button removeIngredient;
+        ImageButton removeIngredient;
 
         public MyViewHolder(View item) {
             ingredientQuantity = (EditText) item.findViewById(R.id.ingredient_row_quantity);
             ingredientLabel = (Spinner) item.findViewById(R.id.ingredient_row_label);
             ingredientName = (TextView) item.findViewById(R.id.ingredient_row_name);
-            removeIngredient = (Button) item.findViewById(R.id.ingredient_row_remove_button);
+            removeIngredient = (ImageButton) item.findViewById(R.id.ingredient_row_remove_button);
         }
     }
 

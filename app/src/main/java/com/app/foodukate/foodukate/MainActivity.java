@@ -1,6 +1,5 @@
 package com.app.foodukate.foodukate;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
@@ -11,22 +10,19 @@ import android.app.Fragment;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 
 import com.app.foodukate.client.RestService;
 import com.app.foodukate.gcm.QuickstartPreferences;
-import com.app.foodukate.gcm.RegistrationIntentService;
 import com.app.foodukate.recipe.AddRecipeActivity;
 import com.app.foodukate.recipe.RecipeApi;
 import com.app.foodukate.recipe.RecipeListFragment;
+import com.app.foodukate.restaurant.RestaurantListActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -41,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +52,11 @@ public class MainActivity extends BaseActivity {
         } else {
             searchRecipe("email", "sudh2@gmail.com");
         }
+        ImageButton addRecipeButton = (ImageButton) findViewById(R.id.fab_add_new_recipe);
+        ImageButton searchByLocationButton = (ImageButton) findViewById(R.id.fab_search_recipe_by_location);
 
-        FloatingActionButton addRecipeButton = (FloatingActionButton) findViewById(R.id.fab_add_new_recipe);
-        addRecipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addRecipeIntent = new Intent(MainActivity.this, AddRecipeActivity.class);
-                startActivity(addRecipeIntent);
-            }
-        });
+        addRecipeButton.setOnClickListener(this);
+        searchByLocationButton.setOnClickListener(this);
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -213,4 +205,21 @@ public class MainActivity extends BaseActivity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private boolean isReceiverRegistered;
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fab_add_new_recipe:
+                Intent addRecipeIntent = new Intent(MainActivity.this, AddRecipeActivity.class);
+                startActivity(addRecipeIntent);
+                break;
+            case R.id.fab_search_recipe_by_location:
+                String search_query = "";
+                String location = "";
+                Intent searchByLocationIntent = new Intent(MainActivity.this, RestaurantListActivity.class);
+                searchByLocationIntent.putExtra("query", search_query);
+                searchByLocationIntent.putExtra("location", location);
+                startActivity(searchByLocationIntent);
+                break;
+        }
+    }
 }
