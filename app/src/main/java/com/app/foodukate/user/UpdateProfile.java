@@ -106,11 +106,11 @@ public class UpdateProfile extends AppCompatActivity implements GoogleApiClient.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.save:
-            registerUser();
+                updateProfile();
         }
     }
 
-    public void registerUser(){
+    public void updateProfile(){
         SparseBooleanArray checkedItems = listview.getCheckedItemPositions();
         int size = checkedItems.size();
         if(size < 1){
@@ -124,44 +124,43 @@ public class UpdateProfile extends AppCompatActivity implements GoogleApiClient.
             String phoneNo = editText.getText().toString();
 
             for (int i = 0; i < count; i++) {
-            if (checkedItems.get(i)) {
-            item = listview.getItemAtPosition(i).toString();
-            interests.add(item);
+                if (checkedItems.get(i)) {
+                    item = listview.getItemAtPosition(i).toString();
+                    interests.add(item);
+                }
+            }
+
+            final UserApi userApi = (UserApi) RestService.getService(UserApi.class);
+            User user = new User();
+            user.setName(loggedInUser.getName());
+            user.setEmail(loggedInUser.getEmail());
+            user.setImgurl(loggedInUser.getPicUrl());
+            user.setPhoneNo(phoneNo);
+            user.setInterest(interests.toArray(new String[0]));
+            Call<ResponseBody> response = userApi.update(user, loggedInUser.getEmail());
+            response.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            Log.e(TAG, response.body().string());
+                            Intent mainActivityIntent = new Intent(UpdateProfile.this, MainActivity.class);
+                            startActivity(mainActivityIntent);
+                        }
+                        else{
+                            Log.e(TAG,response.errorBody().toString());
+                        }
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse: IOException: " + e.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e(TAG, "Enqueue: " + t.getMessage());
+                }
+            });
         }
-            }
-
-    final UserApi userApi = (UserApi) RestService.getService(UserApi.class);
-        User user = new User();
-        user.setName(loggedInUser.getName());
-        user.setEmail(loggedInUser.getEmail());
-        user.setImgUrl(loggedInUser.getPicUrl());
-        user.setPhoneNo(phoneNo);
-        user.setInterest(interests.toArray(new String[0]));
-        Call<ResponseBody> response = userApi.createUser(user);
-        response.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        Log.e(TAG, response.body().string());
-                        Intent mainActivityIntent = new Intent(UpdateProfile.this, MainActivity.class);
-                        startActivity(mainActivityIntent);
-                    }
-                    else{
-                        Log.e(TAG,response.errorBody().toString());
-                    }
-                } catch (IOException e) {
-                    Log.e(TAG, "onResponse: IOException: " + e.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e(TAG, "Enqueue: " + t.getMessage());
-            }
-        });
-
-                }
     }
     /**
      * Background Async task to load user profile picture from url

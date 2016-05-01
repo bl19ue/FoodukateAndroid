@@ -15,6 +15,7 @@ import com.app.foodukate.common.Environment;
 import com.app.foodukate.menu_scanner.OCRApi;
 import com.app.foodukate.menu_scanner.OCRService;
 import com.app.foodukate.menu_scanner.ScannedListActivity;
+import com.app.foodukate.user.UpdateProfile;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -95,6 +96,9 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
                 break;
         }
         switch(id){
+            case R.id.update_profile:
+                updateProfile();
+                return true;
             case R.id.action_settings:
                 return true;
             case R.id.sign_out:
@@ -105,6 +109,10 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
+    private void updateProfile() {
+        Intent updateProfileActivityIntent = new Intent(BaseActivity.this, UpdateProfile.class);
+        startActivity(updateProfileActivityIntent);
+    }
 
     // [START signOut]
     private void signOut() {

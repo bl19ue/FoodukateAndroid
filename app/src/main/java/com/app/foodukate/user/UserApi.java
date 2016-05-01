@@ -5,6 +5,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -16,6 +17,10 @@ public interface UserApi {
 
     @GET("/users/authorize/{email}")
     public Call<ResponseBody> authorizeUser(@Path("email") String email);
+
+
+    @PUT("/users/update/{email}")
+    public Call<ResponseBody> update(@Body User body, @Path("email") String email);
 //
 //    @GET("recipes/search/name/{name}")
 //    public Call<ResponseBody> getRecipeByName(@Path("name") String name);
