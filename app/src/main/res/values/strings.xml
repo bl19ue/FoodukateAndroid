@@ -14,13 +14,13 @@
     <string name="title_activity_scanned_list"></string>
     <string name="title_activity_base"></string>
 
-    <string name="userName">Name :</string>
-    <string name="email">Email :</string>
+    <string name="userName">Name</string>
+    <string name="email">Email</string>
     <string name="login">login</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Search</string>
     <string name="camera">Camera</string>
-    <string name="title_activity_add_recipe">AddRecipeActivity</string>
+    <string name="title_activity_add_recipe">Add Recipe</string>
     <string name="name">Name</string>
     <string name="uploadImage">Upload Image</string>
     <string name="cuisine">Cuisine</string>
@@ -29,6 +29,8 @@
     <string name="ingredients">Ingredients</string>
     <string name="addIngredients">Add Ingredients</string>
     <string name="quantity">Qty</string>
+    <string name="servings">Servings</string>
+    <string name="categories">Categories</string>
 
     <string name="loading">Loading…</string>
 

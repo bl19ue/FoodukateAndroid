@@ -12,7 +12,6 @@
         android:id="@+id/heading"
         android:layout_gravity="center_horizontal"
         android:padding="5dp"
-        android:textStyle="italic"
         android:textSize="20sp"
         android:layout_marginTop="10dp" />
 
@@ -31,30 +30,84 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_username"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/userName"
-            android:id="@+id/name"
-            android:textSize="15sp"
-            android:textStyle="italic"
-            android:paddingLeft="5dp"
-            android:paddingTop="10dp"
-            android:paddingRight="3dp"
-            android:paddingBottom="3dp" />
+            android:paddingBottom="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:capitalize="words"
+                android:hint="@string/name"
+                android:maxLines="1"
+                android:textSize="16sp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_email"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="italic"
-            android:id="@+id/username"
-            android:layout_toEndOf="@+id/name"
-            android:layout_alignParentEnd="true"
-            android:paddingLeft="5dp"
-            android:paddingTop="10dp"
-            android:paddingRight="3dp"
-            android:paddingBottom="3dp" />
+            android:layout_below="@+id/input_layout_username"
+            android:paddingBottom="10dp">
+
+            <EditText
+                android:id="@+id/emailAddr"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:capitalize="words"
+                android:hint="@string/email"
+                android:maxLines="1"
+                android:textSize="12sp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/input_layout_email"
+            android:paddingBottom="10dp">
+
+            <EditText
+                android:id="@+id/phoneNoVal"
+                android:inputType="phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/phone_no"
+                android:maxLines="1"
+                android:textSize="12sp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/userName"-->
+            <!--android:id="@+id/name"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingRight="3dp"-->
+            <!--android:paddingBottom="3dp" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic"-->
+            <!--android:id="@+id/username"-->
+            <!--android:layout_toEndOf="@+id/name"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingRight="3dp"-->
+            <!--android:paddingBottom="3dp" />-->
     </RelativeLayout>
 
     <RelativeLayout android:id="@+id/relativeLayout2"
@@ -63,30 +116,30 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email"
-            android:id="@+id/email"
-            android:textSize="15sp"
-            android:textStyle="italic"
-            android:paddingLeft="5dp"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:paddingRight="3dp" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/email"-->
+            <!--android:id="@+id/email"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingTop="3dp"-->
+            <!--android:paddingBottom="3dp"-->
+            <!--android:paddingRight="3dp" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="italic"
-            android:id="@+id/emailAddr"
-            android:layout_toEndOf="@+id/email"
-            android:layout_alignParentEnd="true"
-            android:paddingLeft="5dp"
-            android:paddingTop="3dp"
-            android:paddingRight="3dp"
-            android:paddingBottom="3dp" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic"-->
+            <!--android:id="@+id/emailAddr"-->
+            <!--android:layout_toEndOf="@+id/email"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingTop="3dp"-->
+            <!--android:paddingRight="3dp"-->
+            <!--android:paddingBottom="3dp" />-->
 
     </RelativeLayout>
 
@@ -95,33 +148,33 @@
         android:layout_width="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/phone_no"
-            android:id="@+id/PhoneNo"
-            android:textSize="15sp"
-            android:textStyle="italic"
-            android:layout_centerVertical="true"
-            android:paddingLeft="5dp"
-            android:paddingTop="3dp"
-            android:paddingRight="3dp"
-            android:paddingBottom="3dp" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/phone_no"-->
+            <!--android:id="@+id/PhoneNo"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingTop="3dp"-->
+            <!--android:paddingRight="3dp"-->
+            <!--android:paddingBottom="3dp" />-->
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:ems="10"
-            android:id="@+id/phoneNoVal"
-            android:layout_alignParentEnd="false"
-            android:layout_toEndOf="@+id/PhoneNo"
-            android:paddingLeft="5dp"
-            android:paddingTop="3dp"
-            android:paddingRight="2dp"
-            android:paddingBottom="2dp"
-            android:textSize="12sp"
-            android:phoneNumber="false" />
+        <!--<EditText-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:inputType="phone"-->
+            <!--android:ems="10"-->
+            <!--android:id="@+id/phoneNoVal"-->
+            <!--android:layout_alignParentEnd="false"-->
+            <!--android:layout_toEndOf="@+id/PhoneNo"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingTop="3dp"-->
+            <!--android:paddingRight="2dp"-->
+            <!--android:paddingBottom="2dp"-->
+            <!--android:textSize="12sp"-->
+            <!--android:phoneNumber="false" />-->
     </RelativeLayout>
 
     <TextView
@@ -130,7 +183,6 @@
         android:text="@string/interests"
         android:id="@+id/Interests"
         android:textSize="15sp"
-        android:textStyle="italic"
         android:layout_marginLeft="10dp"
         android:paddingLeft="5dp"
         android:paddingTop="2dp"

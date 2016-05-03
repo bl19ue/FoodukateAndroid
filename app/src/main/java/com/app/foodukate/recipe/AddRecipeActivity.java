@@ -2,6 +2,7 @@ package com.app.foodukate.recipe;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -118,7 +120,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                 createIngredientsDialog(AddRecipeActivity.this);
                 break;
             }
-            case R.id.submit_recipe_button: {
+            case R.id.new_recipe_submit_button: {
                 JSONObject recipeObject = createRecipeJSONObject();
                 if(recipeObject != null) {
                     Call<ResponseBody> addRecipeResponse = recipeApi.addRecipe(recipeObject);
@@ -152,28 +154,27 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
             recipeObject.put("name", recipeName.getText().toString());
 
             JSONArray cuisines = new JSONArray();
-            cuisines.put(recipeCuisineMulti.getSelectedItemsAsString());
+            cuisines.put(recipeCuisineMulti.getSelectedStrings());
             recipeObject.put("cuisine", cuisines);
 
             JSONArray courses = new JSONArray();
-            if(mainCourseCheckbox.isChecked()) {
-                courses.put(mainCourseCheckbox.getText());
-            }
 
-            if(dessertsCheckbox.isChecked()) {
-                courses.put(dessertsCheckbox.getText());
-            }
+            if(dessertsCheckbox.isChecked()) { courses.put(dessertsCheckbox.getText()); }
 
-            if(soupCheckbox.isChecked()) {
-                courses.put(soupCheckbox.getText());
-            }
+            if(soupCheckbox.isChecked()) { courses.put(soupCheckbox.getText()); }
 
-            if(startersCheckbox.isChecked()) {
-                courses.put(startersCheckbox.getText());
-            }
+            if(appetizerCheckbox.isChecked()) { courses.put(appetizerCheckbox.getText()); }
+
+            if(beverageCheckbox.isChecked()) { courses.put(beverageCheckbox.getText()); }
+
+            if(entreeCheckbox.isChecked()) { courses.put(entreeCheckbox.getText()); }
+
+            if(sidesCheckbox.isChecked()) { courses.put(sidesCheckbox.getText()); }
+
+            if(breakfastCheckbox.isChecked()) { courses.put(breakfastCheckbox.getText()); }
 
             recipeObject.put("courses", courses);
-            recipeObject.put("numberOfServings", 4);
+            recipeObject.put("numberOfServings", servings.getText());
 
             JSONArray stepsArray = new JSONArray();
             String[] steps = recipeSteps.getText().toString().split("\n");
@@ -191,20 +192,24 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
             recipeObject.put("source", UserSingleton.getInstance().getEmail());
             recipeObject.put("cookingTime", 25);
 
-            if(recipeImage != null) {
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) recipeImage.getDrawable();
-                Bitmap image = bitmapDrawable.getBitmap();
+            try {
+                if (recipeImage != null && recipeImage.getDrawable() != null) {
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable) recipeImage.getDrawable();
+                    Bitmap image = bitmapDrawable.getBitmap();
 
-                String name = UUID.randomUUID().toString() + ".jpg";
-                File file = imageToFile(image, name);
+                    String name = UUID.randomUUID().toString() + ".jpg";
+                    File file = imageToFile(image, name);
 
-                new S3Task().execute(file);
+                    new S3Task().execute(file);
 
-                recipeObject.put("imgUrl", "http://foodukate.s3.amazonaws.com/" + name);
+                    recipeObject.put("imgUrl", "http://foodukate.s3.amazonaws.com/" + name);
+                }
+            } catch(Exception e) {
+                Log.e(TAG, "createRecipeJSONObject: Image:" + e.getMessage());
             }
             return recipeObject;
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, "createRecipeJSONObject: JSONException:" + e.getMessage());
         }
 
         return null;
@@ -239,6 +244,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                         + ase.getErrorType());
                 System.out.println("Request ID:       "
                         + ase.getRequestId());
+                Toast.makeText(AddRecipeActivity.this, "S3 did not work", Toast.LENGTH_SHORT).show();
             } catch (AmazonClientException ace) {
                 System.out
                         .println("Caught an AmazonClientException, which "
@@ -247,6 +253,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                                 + "communicate with S3, "
                                 + "such as not being able to access the network.");
                 System.out.println("Error Message: " + ace.getMessage());
+                Toast.makeText(AddRecipeActivity.this, "S3 did not work", Toast.LENGTH_SHORT).show();
             }
 
             return null;
@@ -334,9 +341,9 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
-
-    private void createIngredientsDialog(final Context activity) {
-        Button addIngredientButton = (Button) ingredientDialog.findViewById(R.id.add_ingredient_button);
+    
+    public void createIngredientsDialog(final Context activity) {
+        ImageButton addIngredientButton = (ImageButton) ingredientDialog.findViewById(R.id.add_ingredient_button);
 
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -402,6 +409,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 //        recipeCuisine = (EditText) findViewById(R.id.new_recipe_cuisine);
 //        recipeCourse = (EditText) findViewById(R.id.new_recipe_course);
         recipeSteps = (EditText) findViewById(R.id.new_recipe_steps);
+        servings = (EditText) findViewById(R.id.new_recipe_serving);
 
         recipeCuisineMulti = (MultiSpinner) findViewById(R.id.new_recipe_cuisine_multi);
         if (recipeCuisineMulti != null) {
@@ -418,15 +426,18 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
             newIngredientButton.setOnClickListener(this);
         }
 
-        addRecipeButton = (Button) findViewById(R.id.submit_recipe_button);
+        addRecipeButton = (Button) findViewById(R.id.new_recipe_submit_button);
         if (addRecipeButton != null) {
             addRecipeButton.setOnClickListener(this);
         }
 
-        mainCourseCheckbox = (CheckBox) findViewById(R.id.checkbox_main_course);
-        dessertsCheckbox = (CheckBox) findViewById(R.id.checkbox_desserts);
-        soupCheckbox = (CheckBox) findViewById(R.id.checkbox_soup);
-        startersCheckbox = (CheckBox) findViewById(R.id.checkbox_starters);
+        dessertsCheckbox = (CheckBox) findViewById(R.id.course_dessert);
+        soupCheckbox = (CheckBox) findViewById(R.id.course_soup);
+        entreeCheckbox = (CheckBox) findViewById(R.id.course_entree);
+        beverageCheckbox = (CheckBox) findViewById(R.id.course_beverage);
+        breakfastCheckbox = (CheckBox) findViewById(R.id.course_breakfast);
+        sidesCheckbox = (CheckBox) findViewById(R.id.course_sides);
+        appetizerCheckbox = (CheckBox) findViewById(R.id.course_appetizer);
 
         recipeImage = (ImageView) findViewById(R.id.new_recipe_image);
 
@@ -448,6 +459,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 //    private EditText recipeCuisine;
 //    private EditText recipeCourse;
     private EditText recipeSteps;
+    private EditText servings;
 
     private MultiSpinner recipeCuisineMulti;
 
@@ -456,10 +468,13 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
     private Button addIngredientButton;
     private Button addRecipeButton;
 
-    private CheckBox mainCourseCheckbox;
     private CheckBox dessertsCheckbox;
     private CheckBox soupCheckbox;
-    private CheckBox startersCheckbox;
+    private CheckBox entreeCheckbox;
+    private CheckBox beverageCheckbox;
+    private CheckBox breakfastCheckbox;
+    private CheckBox sidesCheckbox;
+    private CheckBox appetizerCheckbox;
 
     private ImageView recipeImage;
 

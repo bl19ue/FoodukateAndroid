@@ -3,9 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/activity_horizontal_margin"
-    android:padding="@dimen/activity_horizontal_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.app.foodukate.recipe.AddRecipeActivity"
     tools:showIn="@layout/activity_add_recipe">
 
@@ -50,7 +47,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -75,6 +73,72 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/categories" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/category_vegan"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Vegan" />
+
+                            <CheckBox
+                                android:id="@+id/category_vegeterian"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Vegeterian" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/category_gluten_free"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Gluten Free" />
+
+                            <CheckBox
+                                android:id="@+id/category_non_veg"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Non Veg" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
@@ -89,66 +153,144 @@
                         android:layout_weight="3"
                         android:orientation="vertical">
 
-                        <CheckBox
-                            android:id="@+id/checkbox_main_course"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="@string/main_course" />
+                            android:orientation="horizontal">
 
-                        <CheckBox
-                            android:id="@+id/checkbox_starters"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="@string/starters" />
+                            <CheckBox
+                                android:id="@+id/course_dessert"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Dessert" />
 
-                        <CheckBox
-                            android:id="@+id/checkbox_desserts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="@string/desserts" />
+                            <CheckBox
+                                android:id="@+id/course_entree"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Entree" />
+                        </LinearLayout>
 
-                        <CheckBox
-                            android:id="@+id/checkbox_soup"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="@string/soup" />
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/course_beverage"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Beverage" />
+
+                            <CheckBox
+                                android:id="@+id/course_breakfast"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Breakfast" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/course_sides"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Sides" />
+
+                            <CheckBox
+                                android:id="@+id/course_appetizer"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Appetizer" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/course_soup"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="Soup" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_serving"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp">
+
+                    <EditText
+                        android:id="@+id/new_recipe_serving"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/servings"
+                        android:maxLines="1"
+                        android:textSize="12sp" />
+
+                </android.support.design.widget.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="12dp">
 
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/new_recipe_ingredients_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="6dp"
                         android:layout_weight="1"
-                        android:layout_marginBottom="24dp"
-                        android:layout_marginTop="24dp"
-                        android:padding="12dp"
-                        android:text="@string/addIngredients" />
+                        android:padding="6dp"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/white"
+                        android:text="@string/addIngredients"></android.support.v7.widget.AppCompatButton>
 
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/new_recipe_upload_image_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
                         android:layout_weight="1"
-                        android:layout_marginBottom="24dp"
-                        android:layout_marginTop="24dp"
-                        android:padding="12dp"
-                        android:text="@string/uploadImage" />
+                        android:padding="6dp"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/white"
+                        android:text="@string/uploadImage"></android.support.v7.widget.AppCompatButton>
 
 
                 </LinearLayout>
+
+                <!--<ImageView-->
+                <!--android:id="@+id/new_recipe_image"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="100dp"-->
+                <!--android:scaleType="centerCrop" />-->
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_recipe_steps"
@@ -159,25 +301,29 @@
                         android:id="@+id/new_recipe_steps"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:capitalize="sentences"
                         android:hint="@string/steps"
                         android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
                         android:isScrollContainer="true"
-                        android:scrollbars="vertical"
                         android:lines="2"
-                        android:capitalize="sentences"
-                        android:nestedScrollingEnabled="true" />
+                        android:nestedScrollingEnabled="true"
+                        android:scrollbars="vertical" />
                 </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/new_recipe_submit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="6dp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/white"
+                    android:text="@string/save"></android.support.v7.widget.AppCompatButton>
 
             </LinearLayout>
         </ScrollView>
 
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/submit_recipe_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="@string/add"/>
     </LinearLayout>
 
 

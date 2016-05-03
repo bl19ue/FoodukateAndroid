@@ -21,6 +21,7 @@ import com.app.foodukate.foodukate.MainActivity;
 import com.app.foodukate.foodukate.R;
 import com.app.foodukate.notification.FollowBody;
 import com.app.foodukate.notification.UserCallApi;
+import com.app.foodukate.user.UserSingleton;
 import com.app.foodukate.volley.VolleySingleton;
 
 import org.json.JSONException;
@@ -34,6 +35,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RecipeDetailActivity extends BaseActivity implements View.OnClickListener {
+
+     String recipeSource=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,7 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
                     Bundle bundle = new Bundle();
                     JSONObject recipeObject = new JSONObject(response.body().string());
                     JSONObject recipeDetailData = recipeObject.getJSONObject("recipe").getJSONObject("data");
+                    recipeSource = recipeDetailData.getString("source");
                     loadImageandText(recipeDetailData);
                     loadFollowStar();
 
@@ -139,7 +143,7 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.menu_item_share: {
-                Toast.makeText(RecipeDetailActivity.this, "Share Btn Clicked", Toast.LENGTH_SHORT).show();
+                UserSingleton loginUser = UserSingleton.getInstance();
                 break;
             }
             case R.id.menu_item_follow: {
@@ -147,10 +151,11 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
             }
             case R.id.follow_user_button: {
+                UserSingleton loginUser = UserSingleton.getInstance();
                 final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
                 FollowBody fb = new FollowBody();
-                fb.setObjectId1("");
-                fb.setObjectId2("");
+                fb.setLoggedInUsrEmail(loginUser.getEmail());
+                fb.setOtherUsrEmail(recipeSource);
                 Call<ResponseBody> response = userApi.followUser(fb);
                 response.enqueue(new Callback<ResponseBody>() {
                     @Override
