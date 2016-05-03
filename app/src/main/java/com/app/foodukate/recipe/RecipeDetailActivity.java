@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecipeDetailActivity extends BaseActivity {
+public class RecipeDetailActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,53 +45,13 @@ public class RecipeDetailActivity extends BaseActivity {
         Log.i(TAG, "onCreate: recipe_id: " + this.recipeId);
 
         ImageButton shareBtn = (ImageButton) findViewById(R.id.menu_item_share);
+        shareBtn.setOnClickListener(this);
+
         ImageButton followBtn = (ImageButton) findViewById(R.id.menu_item_follow);
+        followBtn.setOnClickListener(this);
+
         ImageButton followUserBtn = (ImageButton) findViewById(R.id.follow_user_button);
-
-        shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(RecipeDetailActivity.this, "Share Btn Clicked", Toast.LENGTH_SHORT);
-            }
-        });
-
-        followBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(RecipeDetailActivity.this, "Follow Btn Clicked", Toast.LENGTH_SHORT);
-            }
-        });
-
-        followUserBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
-                FollowBody fb = new FollowBody();
-                fb.setObjectId1("");
-                fb.setObjectId2("");
-                Call<ResponseBody> response = userApi.followUser(fb);
-                response.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            if (response.isSuccessful()) {
-                                Log.e(TAG, response.body().string());
-                            }
-                            else{
-                                Log.e(TAG,response.errorBody().toString());
-                            }
-                        } catch (IOException e) {
-                            Log.e(TAG, "onResponse: IOException: " + e.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e(TAG, "Enqueue: " + t.getMessage());
-                    }
-                });
-            }
-        });
+        followUserBtn.setOnClickListener(this);
 
         final RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
         Call<ResponseBody> responseBodyCall = recipeApi.getRecipeById(recipeId);
@@ -142,7 +102,7 @@ public class RecipeDetailActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Log.e(TAG, "handleResponse: onFailure: " + t.getMessage());
             }
         });
     }
@@ -174,4 +134,46 @@ public class RecipeDetailActivity extends BaseActivity {
 
     private String recipeId = "";
     private static final String TAG = "RecipeDetailActivity: ";
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.menu_item_share: {
+                Toast.makeText(RecipeDetailActivity.this, "Share Btn Clicked", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.menu_item_follow: {
+                Toast.makeText(RecipeDetailActivity.this, "Follow Btn Clicked", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.follow_user_button: {
+                final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
+                FollowBody fb = new FollowBody();
+                fb.setObjectId1("");
+                fb.setObjectId2("");
+                Call<ResponseBody> response = userApi.followUser(fb);
+                response.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        try {
+                            if (response.isSuccessful()) {
+                                Log.e(TAG, response.body().string());
+                            }
+                            else{
+                                Log.e(TAG,response.errorBody().toString());
+                            }
+                        } catch (IOException e) {
+                            Log.e(TAG, "onResponse: IOException: " + e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e(TAG, "Enqueue: " + t.getMessage());
+                    }
+                });
+                break;
+            }
+        }
+    }
 }

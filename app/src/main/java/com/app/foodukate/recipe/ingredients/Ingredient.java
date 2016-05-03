@@ -32,6 +32,10 @@ public class Ingredient {
         this.quantity = quantity;
     }
 
+    public String string() {
+        return quantity + " " + labels.get(0) + " " + name;
+    }
+
     private String _id;
     private String name;
     private ArrayList<String> labels;

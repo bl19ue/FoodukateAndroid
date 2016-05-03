@@ -47,4 +47,10 @@
     <string name="profile_picture">Profile Picture</string>
     <string name="comment">* select atleast one cuisine of interest</string>
 
+    <string name="main_course">Main course</string>
+    <string name="starters">Starters</string>
+    <string name="desserts">Desserts</string>
+    <string name="soup">Soup</string>
+
+    <string name="add">Add</string>
 </resources>

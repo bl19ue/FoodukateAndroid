@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,26 +24,43 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.app.foodukate.client.RestService;
 import com.app.foodukate.common.MultiSpinner;
 import com.app.foodukate.foodukate.R;
 import com.app.foodukate.recipe.ingredients.Ingredient;
 import com.app.foodukate.recipe.ingredients.IngredientListAdapter;
+import com.app.foodukate.secret.AWS;
+import com.app.foodukate.user.User;
+import com.app.foodukate.user.UserSingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,39 +68,15 @@ import retrofit2.Response;
 
 public class AddRecipeActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static ArrayList<Ingredient> savedIngredientList = new ArrayList<>();
+    public static IngredientListAdapter ingredientListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
 
-        recipeName = (EditText) findViewById(R.id.new_recipe_name);
-//        recipeCuisine = (EditText) findViewById(R.id.new_recipe_cuisine);
-//        recipeCourse = (EditText) findViewById(R.id.new_recipe_course);
-        recipeSteps = (EditText) findViewById(R.id.new_recipe_steps);
-
-        recipeCuisineMulti = (MultiSpinner) findViewById(R.id.new_recipe_cuisine_multi);
-        recipeCuisineMulti.setItems(cuisines);
-
-        uploadRecipeButton = (Button) findViewById(R.id.new_recipe_upload_image_button);
-        uploadRecipeButton.setOnClickListener(this);
-
-        newIngredientButton = (Button) findViewById(R.id.new_recipe_ingredients_button);
-        newIngredientButton.setOnClickListener(this);
-
-        recipeImage = (ImageView) findViewById(R.id.new_recipe_image);
-
-        ingredientListAdapter = new IngredientListAdapter(this, savedIngredientList);
-
-        ingredientDialog = new Dialog(this);
-
-        ingredientDialog.setContentView(R.layout.dialog_ingredients);
-        ingredientDialog.setTitle("Add ingredients");
-
-
-        ingredientName = (AutoCompleteTextView) ingredientDialog.findViewById(R.id.ingredient_name);
-
-        ingredientsListView = (ListView) ingredientDialog.findViewById(R.id.new_recipe_ingredients_list);
-        ingredientsListView.setAdapter(ingredientListAdapter);
+        initializeElements();
     }
 
     @Override
@@ -123,10 +118,224 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                 createIngredientsDialog(AddRecipeActivity.this);
                 break;
             }
+            case R.id.submit_recipe_button: {
+                JSONObject recipeObject = createRecipeJSONObject();
+                if(recipeObject != null) {
+                    Call<ResponseBody> addRecipeResponse = recipeApi.addRecipe(recipeObject);
+                    handleAddRecipeResponse(addRecipeResponse);
+                }
+                break;
+            }
         }
     }
 
-    public void createIngredientsDialog(final Context activity) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri uri = data.getData();
+
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                recipeImage.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                Log.e(TAG, "onActivityResult: IOException: " + e.getMessage());
+            }
+        }
+    }
+
+    private JSONObject createRecipeJSONObject() {
+        JSONObject recipeObject = new JSONObject();
+        try {
+            recipeObject.put("name", recipeName.getText().toString());
+
+            JSONArray cuisines = new JSONArray();
+            cuisines.put(recipeCuisineMulti.getSelectedItemsAsString());
+            recipeObject.put("cuisine", cuisines);
+
+            JSONArray courses = new JSONArray();
+            if(mainCourseCheckbox.isChecked()) {
+                courses.put(mainCourseCheckbox.getText());
+            }
+
+            if(dessertsCheckbox.isChecked()) {
+                courses.put(dessertsCheckbox.getText());
+            }
+
+            if(soupCheckbox.isChecked()) {
+                courses.put(soupCheckbox.getText());
+            }
+
+            if(startersCheckbox.isChecked()) {
+                courses.put(startersCheckbox.getText());
+            }
+
+            recipeObject.put("courses", courses);
+            recipeObject.put("numberOfServings", 4);
+
+            JSONArray stepsArray = new JSONArray();
+            String[] steps = recipeSteps.getText().toString().split("\n");
+            for (String step : steps) {
+                stepsArray.put(step);
+            }
+            recipeObject.put("steps", stepsArray);
+
+            JSONArray ingredients = new JSONArray();
+            for(int i=0;i<savedIngredientList.size();i++) {
+                ingredients.put(savedIngredientList.get(i).string());
+            }
+            recipeObject.put("ingredients", ingredients);
+
+            recipeObject.put("source", UserSingleton.getInstance().getEmail());
+            recipeObject.put("cookingTime", 25);
+
+            if(recipeImage != null) {
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) recipeImage.getDrawable();
+                Bitmap image = bitmapDrawable.getBitmap();
+
+                String name = UUID.randomUUID().toString() + ".jpg";
+                File file = imageToFile(image, name);
+
+                new S3Task().execute(file);
+
+                recipeObject.put("imgUrl", "http://foodukate.s3.amazonaws.com/" + name);
+            }
+            return recipeObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private class S3Task extends AsyncTask<File, Integer, JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(File... params) {
+            File image = params[0];
+
+            AmazonS3 s3client = new AmazonS3Client(new BasicAWSCredentials(
+                    AWS.accessKeyId,
+                    AWS.secretAccessKey));
+
+            try {
+                System.out.println("Uploading a new object to S3 from a file\n");
+                s3client.putObject(new PutObjectRequest("foodukate", image.getName(), image));
+
+            } catch (AmazonServiceException ase) {
+                System.out
+                        .println("Caught an AmazonServiceException, which "
+                                + "means your request made it "
+                                + "to Amazon S3, but was rejected with an error response"
+                                + " for some reason.");
+                System.out.println("Error Message:    " + ase.getMessage());
+                System.out.println("HTTP Status Code: "
+                        + ase.getStatusCode());
+                System.out.println("AWS Error Code:   "
+                        + ase.getErrorCode());
+                System.out.println("Error Type:       "
+                        + ase.getErrorType());
+                System.out.println("Request ID:       "
+                        + ase.getRequestId());
+            } catch (AmazonClientException ace) {
+                System.out
+                        .println("Caught an AmazonClientException, which "
+                                + "means the client encountered "
+                                + "an internal error while trying to "
+                                + "communicate with S3, "
+                                + "such as not being able to access the network.");
+                System.out.println("Error Message: " + ace.getMessage());
+            }
+
+            return null;
+        }
+    }
+
+    private File imageToFile(Bitmap image, String name) {
+        File imageFile = new File(this.getFilesDir().getPath(), name);
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(imageFile.getPath());
+            image.compress(Bitmap.CompressFormat.JPEG, 40, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            return imageFile;
+        } catch (Exception e) {
+            System.out.println("Unable to write image file");
+            return null;
+        }
+    }
+
+    private void handleAddRecipeResponse(final Call<ResponseBody> recipeCall) {
+        recipeCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    JSONObject recipeObject = new JSONObject(response.body().string());
+                    String id = recipeObject.getJSONObject("data").getString("id");
+
+                    Intent recipeDetailIntent = new Intent(AddRecipeActivity.this, RecipeDetailActivity.class);
+                    recipeDetailIntent.putExtra("recipe_id", id);
+                    startActivity(recipeDetailIntent);
+                } catch (JSONException e) {
+                    Log.e(TAG, "handleAddRecipeResponse: JSONException:" + e.getMessage());
+                } catch (IOException e) {
+                    Log.e(TAG, "handleAddRecipeResponse: IOException:" + e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "handleAddRecipeResponse: onFailure:" + t.getMessage());
+            }
+        });
+    }
+
+    private void handleIngredientsResponse(Call<ResponseBody> ingredientsCall) {
+        ingredientsCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ingredientArrayList = new ArrayList<>();
+                    ingredientsNameList = new ArrayList<>();
+
+                    JSONArray ingredientsJSONArray = new JSONArray(response.body().string());
+                    for (int i = 0; i < ingredientsJSONArray.length(); i++) {
+                        JSONObject ingredientJSONObject = ingredientsJSONArray.getJSONObject(i);
+                        String _id = ingredientJSONObject.getString("_id");
+                        String name = ingredientJSONObject.getString("name");
+
+                        JSONArray labels = ingredientJSONObject.getJSONArray("labels");
+                        ArrayList<String> labelsArray = new ArrayList<>();
+                        for (int j = 0; j < labels.length(); j++) {
+                            labelsArray.add(labels.getString(j));
+                        }
+
+                        ingredientArrayList.add(new Ingredient(_id, name, labelsArray));
+                        ingredientsNameList.add(name);
+                    }
+
+                    ingredientName.setAdapter(new ArrayAdapter<String>(AddRecipeActivity.this,
+                            android.R.layout.simple_dropdown_item_1line, ingredientsNameList));
+                    ingredientName.showDropDown();
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "handleIngredientsResponse: JSONException: " + e.getMessage());
+                } catch (IOException e) {
+                    Log.e(TAG, "handleIngredientsResponse: IOException: " + e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "handleIngredientsResponse: onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    private void createIngredientsDialog(final Context activity) {
         Button addIngredientButton = (Button) ingredientDialog.findViewById(R.id.add_ingredient_button);
 
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
@@ -188,63 +397,51 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
         ingredientDialog.show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void initializeElements() {
+        recipeName = (EditText) findViewById(R.id.new_recipe_name);
+//        recipeCuisine = (EditText) findViewById(R.id.new_recipe_cuisine);
+//        recipeCourse = (EditText) findViewById(R.id.new_recipe_course);
+        recipeSteps = (EditText) findViewById(R.id.new_recipe_steps);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            Uri uri = data.getData();
-
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                recipeImage.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                Log.e(TAG, "onActivityResult: IOException: " + e.getMessage());
-            }
+        recipeCuisineMulti = (MultiSpinner) findViewById(R.id.new_recipe_cuisine_multi);
+        if (recipeCuisineMulti != null) {
+            recipeCuisineMulti.setItems(cuisines);
         }
-    }
 
-    private void handleIngredientsResponse(Call<ResponseBody> ingredientsCall) {
-        ingredientsCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ingredientArrayList = new ArrayList<>();
-                    ingredientsNameList = new ArrayList<>();
+        uploadRecipeButton = (Button) findViewById(R.id.new_recipe_upload_image_button);
+        if (uploadRecipeButton != null) {
+            uploadRecipeButton.setOnClickListener(this);
+        }
 
-                    JSONArray ingredientsJSONArray = new JSONArray(response.body().string());
-                    for(int i=0;i<ingredientsJSONArray.length();i++) {
-                        JSONObject ingredientJSONObject = ingredientsJSONArray.getJSONObject(i);
-                        String _id = ingredientJSONObject.getString("_id");
-                        String name = ingredientJSONObject.getString("name");
+        newIngredientButton = (Button) findViewById(R.id.new_recipe_ingredients_button);
+        if (newIngredientButton != null) {
+            newIngredientButton.setOnClickListener(this);
+        }
 
-                        JSONArray labels = ingredientJSONObject.getJSONArray("labels");
-                        ArrayList<String> labelsArray = new ArrayList<>();
-                        for(int j=0;j<labels.length();j++) {
-                            labelsArray.add(labels.getString(j));
-                        }
+        addRecipeButton = (Button) findViewById(R.id.submit_recipe_button);
+        if (addRecipeButton != null) {
+            addRecipeButton.setOnClickListener(this);
+        }
 
-                        ingredientArrayList.add(new Ingredient(_id, name, labelsArray));
-                        ingredientsNameList.add(name);
-                    }
+        mainCourseCheckbox = (CheckBox) findViewById(R.id.checkbox_main_course);
+        dessertsCheckbox = (CheckBox) findViewById(R.id.checkbox_desserts);
+        soupCheckbox = (CheckBox) findViewById(R.id.checkbox_soup);
+        startersCheckbox = (CheckBox) findViewById(R.id.checkbox_starters);
 
-                    ingredientName.setAdapter(new ArrayAdapter<String>(AddRecipeActivity.this,
-                            android.R.layout.simple_dropdown_item_1line, ingredientsNameList));
-                    ingredientName.showDropDown();
+        recipeImage = (ImageView) findViewById(R.id.new_recipe_image);
 
-                } catch (JSONException e) {
-                    Log.e(TAG, "handleIngredientsResponse: JSONException: " + e.getMessage());
-                } catch (IOException e) {
-                    Log.e(TAG, "handleIngredientsResponse: IOException: " + e.getMessage());
-                }
-            }
+        ingredientListAdapter = new IngredientListAdapter(this, savedIngredientList);
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e(TAG, "handleIngredientsResponse: onFailure: " + t.getMessage());
-            }
-        });
+        ingredientDialog = new Dialog(this);
+
+        ingredientDialog.setContentView(R.layout.dialog_ingredients);
+        ingredientDialog.setTitle("Add ingredients");
+
+
+        ingredientName = (AutoCompleteTextView) ingredientDialog.findViewById(R.id.ingredient_name);
+
+        ingredientsListView = (ListView) ingredientDialog.findViewById(R.id.new_recipe_ingredients_list);
+        ingredientsListView.setAdapter(ingredientListAdapter);
     }
 
     private EditText recipeName;
@@ -257,6 +454,12 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
     private Button uploadRecipeButton;
     private Button newIngredientButton;
     private Button addIngredientButton;
+    private Button addRecipeButton;
+
+    private CheckBox mainCourseCheckbox;
+    private CheckBox dessertsCheckbox;
+    private CheckBox soupCheckbox;
+    private CheckBox startersCheckbox;
 
     private ImageView recipeImage;
 
@@ -267,6 +470,8 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
     private Bitmap bitmap = null;
 
     private Dialog ingredientDialog;
+
+    private ArrayList<String> courses = new ArrayList<>();
 
     private String[] cuisines = {"Asian","Barbecue","Greek","Mediterranean","Indian","Kid-Friendly",
             "Thai","Mexican","Spanish","Japanese","American","Chinese","Italian",
@@ -279,6 +484,4 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
     private final RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
     private boolean ingredientNameChanged = true;
 
-    public static ArrayList<Ingredient> savedIngredientList = new ArrayList<>();
-    public static IngredientListAdapter ingredientListAdapter;
 }

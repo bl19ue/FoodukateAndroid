@@ -72,7 +72,12 @@
         </activity>
         <activity
             android:name="com.app.foodukate.recipe.AddRecipeActivity"
-            android:label="@string/title_activity_add_recipe" >
+            android:label="@string/title_activity_add_recipe"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name="com.app.foodukate.restaurant.RestaurantListActivity"
+            android:parentActivityName=".MainActivity">
         </activity>
 
         <receiver
