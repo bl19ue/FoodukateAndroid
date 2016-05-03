@@ -284,4 +284,8 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 
     public static ArrayList<Ingredient> savedIngredientList = new ArrayList<>();
     public static IngredientListAdapter ingredientListAdapter;
+
+    //To get list of selected itmes
+    // List<String> selected = recipeCuisineMulti.getSelectedStrings();
+
 }

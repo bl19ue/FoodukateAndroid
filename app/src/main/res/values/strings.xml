@@ -29,6 +29,8 @@
     <string name="ingredients">Ingredients</string>
     <string name="addIngredients">Add Ingredients</string>
     <string name="quantity">Qty</string>
+    <string name="servings">Servings</string>
+    <string name="categories">Categories</string>
 
     <string name="loading">Loading…</string>
 
