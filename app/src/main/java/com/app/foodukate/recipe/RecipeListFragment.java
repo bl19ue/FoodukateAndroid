@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.app.foodukate.client.RestService;
 import com.app.foodukate.foodukate.R;
+import com.app.foodukate.volley.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,35 +41,48 @@ public class RecipeListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_recipe_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         ListView recipeList = (ListView) view.findViewById(R.id.recipe_list);
         String recipes = null;
 
         try {
             recipes = getArguments().getString("recipes");
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(TAG, "onCreateView: " + e.getMessage());
         }
 
-        if(recipes != null) {
+        if (recipes != null) {
             try {
                 JSONArray recipeJSONList = new JSONArray(recipes);
                 ArrayList<Recipe> recipeArrayList = new ArrayList<>();
 
-                for(int i=0;i<recipeJSONList.length();i++) {
+
+                for (int i = 0; i < recipeJSONList.length(); i++) {
+                    String name, rating, source, imgUrl, id;
                     JSONObject recipe = recipeJSONList.getJSONObject(i);
-                    String name = recipe.getString("name");
-                    String imgUrl = recipe.getString("imgUrl");
-                    String id = recipe.getString("id");
-                    String rating = recipe.getString("rating");
-                    String source = "by ";
-                    source += recipe.getJSONObject("source").getString("sourceDisplayName");
+                    name = recipe.getString("name");
+                    try{
+                        imgUrl = recipe.getString("imgUrl");
+                    }
+                    catch (JSONException e){
+                        imgUrl = "http://www.vishmax.com/en/innovattive-cms/themes/themax-theme-2015/images/no-image-found.gif";
+                    }
+                    if (imgUrl.equals("") || imgUrl == null){
+                        imgUrl = "http://www.vishmax.com/en/innovattive-cms/themes/themax-theme-2015/images/no-image-found.gif";
+                    }
+                    id = recipe.getString("id");
+                    rating = recipe.getString("rating");
+                    try{
+                        source = "by " + recipe.getJSONObject("source").getString("sourceDisplayName");
+                    }catch (JSONException e){
+                        source = "by " + recipe.getString("source");
+                    }
 
                     Recipe thisRecipe = new RecipeBuilder().withRecipeId(id)
-                            .withName(name)
+                            .withName((!name.equals("") && name != null) ? name : "No name")
                             .withImageUrl(imgUrl)
-                            .withRating(rating)
+                            .withRating((!rating.equals("") && rating != null) ? rating : "Not rated yet")
                             .withSource(source)
                             .build();
                     recipeArrayList.add(thisRecipe);
@@ -76,6 +91,7 @@ public class RecipeListFragment extends Fragment {
                 recipeList.setAdapter(recipeListAdapter);
 
             } catch (JSONException e) {
+                e.printStackTrace();
                 Log.e(TAG, "onCreateView: JSONException: " + e.getMessage());
             }
         } else {

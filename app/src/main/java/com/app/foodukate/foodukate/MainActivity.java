@@ -23,6 +23,7 @@ import com.app.foodukate.recipe.AddRecipeActivity;
 import com.app.foodukate.recipe.RecipeApi;
 import com.app.foodukate.recipe.RecipeListFragment;
 import com.app.foodukate.restaurant.RestaurantListActivity;
+import com.app.foodukate.user.UserSingleton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -50,7 +51,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         if(recipe_name != null) {
             searchRecipe("name", recipe_name);
         } else {
-            searchRecipe("email", "sudh2@gmail.com");
+            String email = UserSingleton.getInstance().getEmail();
+            searchRecipe("email", email);
         }
         ImageButton addRecipeButton = (ImageButton) findViewById(R.id.fab_add_new_recipe);
         ImageButton searchByLocationButton = (ImageButton) findViewById(R.id.fab_search_recipe_by_location);

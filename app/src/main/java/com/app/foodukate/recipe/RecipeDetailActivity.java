@@ -36,7 +36,7 @@ import retrofit2.Response;
 
 public class RecipeDetailActivity extends BaseActivity implements View.OnClickListener {
 
-     String recipeSource=null;
+    String recipeSource = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,26 +111,44 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
-    private void loadImageandText(JSONObject recipeDetail){
+    private void loadImageandText(JSONObject recipeDetail) {
         final NetworkImageView recipeDetailImage = (NetworkImageView) this.findViewById(R.id.recipe_detail_image);
         final TextView recipeDetailName = (TextView) this.findViewById(R.id.recipe_detail_name);
         final TextView recipeDetailSource = (TextView) this.findViewById(R.id.recipe_detail_source);
         final TextView recipeDetailRating = (TextView) this.findViewById(R.id.recipe_detail_rating);
+        String name, rating, source, imgUrl;
+        try {
+            name = recipeDetail.getString("name");
+            rating = recipeDetail.getString("rating");
+            try{
+                source = "by " + recipeDetail.getJSONObject("source").getString("sourceDisplayName");
+            }catch (JSONException e){
+                source = "by " + recipeDetail.getString("source");
+            }
+            try{
+                imgUrl = recipeDetail.getString("imgUrl");
+            }
+            catch (JSONException e){
+                imgUrl = "http://www.vishmax.com/en/innovattive-cms/themes/themax-theme-2015/images/no-image-found.gif";
+            }
+            if (imgUrl.equals("") || imgUrl == null){
+                imgUrl = "http://www.vishmax.com/en/innovattive-cms/themes/themax-theme-2015/images/no-image-found.gif";
+            }
+            recipeDetailName.setText((!name.equals("") && name != null) ? name : "No name");
+            recipeDetailRating.setText((!rating.equals("") && rating != null) ? rating : "Not rated yet");
+            recipeDetailSource.setText(source);
 
-        try{
+            imgUrl = recipeDetail.getString("imgUrl");
             ImageLoader imageLoader = VolleySingleton.getInstance().getImageLoader();
-            recipeDetailImage.setImageUrl(recipeDetail.getString("imgUrl"), imageLoader);
-            recipeDetailName.setText(recipeDetail.getString("name"));
-            recipeDetailRating.setText(recipeDetail.getString("rating"));
-            recipeDetailSource.setText("by " + recipeDetail.getJSONObject("source").getString("sourceDisplayName"));
+            recipeDetailImage.setImageUrl(imgUrl, imageLoader);
 
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             Log.e(TAG, "handleResponse: JSONException: " + e.getMessage());
         }
 
     }
 
-    private void loadFollowStar(){
+    private void loadFollowStar() {
 
         //TO DO
 
@@ -141,7 +159,7 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
             case R.id.menu_item_share: {
                 UserSingleton loginUser = UserSingleton.getInstance();
                 break;
@@ -163,9 +181,8 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
                         try {
                             if (response.isSuccessful()) {
                                 Log.e(TAG, response.body().string());
-                            }
-                            else{
-                                Log.e(TAG,response.errorBody().toString());
+                            } else {
+                                Log.e(TAG, response.errorBody().toString());
                             }
                         } catch (IOException e) {
                             Log.e(TAG, "onResponse: IOException: " + e.toString());

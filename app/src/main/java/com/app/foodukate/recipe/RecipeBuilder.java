@@ -16,6 +16,7 @@ public class RecipeBuilder {
     String cookingTime;
     String thumbnailUrl;
     String miscellaneous;
+    String servings;
 
     ArrayList<String> steps;
     ArrayList<String> alias;
@@ -95,6 +96,11 @@ public class RecipeBuilder {
 
     public RecipeBuilder withCategories(ArrayList<String> categories) {
         this.categories = categories;
+        return this;
+    }
+
+    public RecipeBuilder withServings(String servings){
+        this.servings = servings;
         return this;
     }
 

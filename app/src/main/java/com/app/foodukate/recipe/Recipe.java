@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ public class Recipe {
         this.cookingTime = recipeBuilder.cookingTime;
         this.thumbnailUrl = recipeBuilder.thumbnailUrl;
         this.miscellaneous = recipeBuilder.miscellaneous;
+        this.servings = recipeBuilder.servings;
 
         this.steps = recipeBuilder.steps;
         this.alias = recipeBuilder.alias;
@@ -48,6 +50,7 @@ public class Recipe {
 
     public String getMiscellaneous() { return miscellaneous; }
 
+    public String getServings() { return servings; }
 
     public ArrayList<String> getSteps() { return steps; }
 
@@ -59,21 +62,22 @@ public class Recipe {
 
     public ArrayList<String> getCategories() { return categories; }
 
-    @Expose private String id;
+    @Expose @SerializedName("id") private String id;
     @Expose private String _id;
-    @Expose private String name;
-    @Expose private String source;
-    @Expose private String rating;
-    @Expose private String imageUrl;
-    @Expose private String cookingTime;
-    @Expose private String thumbnailUrl;
-    @Expose private String miscellaneous;
+    @Expose @SerializedName("name") private String name;
+    @Expose @SerializedName("source") private String source;
+    @Expose @SerializedName("rating") private String rating;
+    @Expose @SerializedName("imgUrl") private String imageUrl;
+    @Expose @SerializedName("cookingTime") private String cookingTime;
+    @Expose @SerializedName("numberOfServings") private String servings;
+    @Expose @SerializedName("thumbnailURL") private String thumbnailUrl;
+    @Expose @SerializedName("miscellaneous") private String miscellaneous;
 
-    @Expose private ArrayList<String> steps;
-    @Expose private ArrayList<String> alias;
-    @Expose private ArrayList<String> courses;
-    @Expose private ArrayList<String> cuisines;
-    @Expose private ArrayList<String> categories;
+    @Expose @SerializedName("steps") private ArrayList<String> steps;
+    @Expose @SerializedName("alias") private ArrayList<String> alias;
+    @Expose @SerializedName("course") private ArrayList<String> courses;
+    @Expose @SerializedName("cuisines") private ArrayList<String> cuisines;
+    @Expose @SerializedName("categories") private ArrayList<String> categories;
 
 //  TODO  @Expose private ArrayList<String> ingredients;
 

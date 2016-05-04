@@ -1,10 +1,7 @@
 package com.app.foodukate.recipe;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,11 +10,9 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +25,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.AmazonClientException;
@@ -45,7 +39,6 @@ import com.app.foodukate.foodukate.R;
 import com.app.foodukate.recipe.ingredients.Ingredient;
 import com.app.foodukate.recipe.ingredients.IngredientListAdapter;
 import com.app.foodukate.secret.AWS;
-import com.app.foodukate.user.User;
 import com.app.foodukate.user.UserSingleton;
 
 import org.json.JSONArray;
@@ -57,12 +50,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -121,9 +110,10 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                 break;
             }
             case R.id.new_recipe_submit_button: {
-                JSONObject recipeObject = createRecipeJSONObject();
-                if(recipeObject != null) {
-                    Call<ResponseBody> addRecipeResponse = recipeApi.addRecipe(recipeObject);
+//                JSONObject recipeObject = createRecipeJSONObject();
+                Recipe newRecipe = createRecipeObject();
+                if(newRecipe != null) {
+                    Call<ResponseBody> addRecipeResponse = recipeApi.addRecipe(newRecipe);
                     handleAddRecipeResponse(addRecipeResponse);
                 }
                 break;
@@ -148,6 +138,65 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    private Recipe createRecipeObject(){
+        String name = recipeName.getText().toString();
+        ArrayList<String> courses = new ArrayList<>();
+        ArrayList<String> cuisines = new ArrayList<>(recipeCuisineMulti.getSelectedStrings());
+        ArrayList<String> categories = new ArrayList<>();
+
+        if(dessertsCheckbox.isChecked()) { courses.add(dessertsCheckbox.getText().toString()); }
+
+        if(soupCheckbox.isChecked()) { courses.add(soupCheckbox.getText().toString()); }
+
+        if(appetizerCheckbox.isChecked()) { courses.add(appetizerCheckbox.getText().toString()); }
+
+        if(beverageCheckbox.isChecked()) { courses.add(beverageCheckbox.getText().toString()); }
+
+        if(entreeCheckbox.isChecked()) { courses.add(entreeCheckbox.getText().toString()); }
+
+        if(sidesCheckbox.isChecked()) { courses.add(sidesCheckbox.getText().toString()); }
+
+        if(breakfastCheckbox.isChecked()) { courses.add(breakfastCheckbox.getText().toString()); }
+
+        if (categoryGlutenFreeCheckbox.isChecked()) {
+            categories.add(categoryGlutenFreeCheckbox.getText().toString());
+        }
+
+        if (categoryNonVegCheckbox.isChecked()) {
+            categories.add(categoryNonVegCheckbox.getText().toString());
+        }
+        if (categoryVeganCheckbox.isChecked()) {
+            categories.add(categoryVeganCheckbox.getText().toString());
+        }
+        if (categoryVegeterianCheckbox.isChecked()) {
+            categories.add(categoryVegeterianCheckbox.getText().toString());
+        }
+
+        ArrayList<String> stepsArray = new ArrayList<>();
+        String[] steps = recipeSteps.getText().toString().split("\n");
+        for (String step : steps) {
+            stepsArray.add(step);
+        }
+
+        JSONArray ingredients = new JSONArray();
+        for(int i=0;i<savedIngredientList.size();i++) {
+            ingredients.put(savedIngredientList.get(i).string());
+        }
+
+        Recipe newRecipe = new RecipeBuilder()
+                .withName(name)
+                .withCourses(courses)
+                .withCategories(categories)
+                .withServings(servings.getText().toString())
+                .withCuisines(cuisines)
+                .withSource(UserSingleton.getInstance().getEmail())
+                .withCookingTime(cookingTime.getText().toString())
+                .withSteps(stepsArray)
+                .build();
+        return newRecipe;
+
+    }
+
     private JSONObject createRecipeJSONObject() {
         JSONObject recipeObject = new JSONObject();
         try {
@@ -155,9 +204,10 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 
             JSONArray cuisines = new JSONArray();
             cuisines.put(recipeCuisineMulti.getSelectedStrings());
-            recipeObject.put("cuisine", cuisines);
+            recipeObject.put("cuisines", cuisines);
 
             JSONArray courses = new JSONArray();
+            JSONArray categories = new JSONArray();
 
             if(dessertsCheckbox.isChecked()) { courses.put(dessertsCheckbox.getText()); }
 
@@ -173,7 +223,22 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 
             if(breakfastCheckbox.isChecked()) { courses.put(breakfastCheckbox.getText()); }
 
-            recipeObject.put("courses", courses);
+            if (categoryGlutenFreeCheckbox.isChecked()) {
+                categories.put(categoryGlutenFreeCheckbox.getText().toString());
+            }
+
+            if (categoryNonVegCheckbox.isChecked()) {
+                categories.put(categoryNonVegCheckbox.getText().toString());
+            }
+            if (categoryVeganCheckbox.isChecked()) {
+                categories.put(categoryVeganCheckbox.getText().toString());
+            }
+            if (categoryVegeterianCheckbox.isChecked()) {
+                categories.put(categoryVegeterianCheckbox.getText().toString());
+            }
+
+            recipeObject.put("course", courses);
+            recipeObject.put("categories", categories);
             recipeObject.put("numberOfServings", servings.getText());
 
             JSONArray stepsArray = new JSONArray();
@@ -200,7 +265,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                     String name = UUID.randomUUID().toString() + ".jpg";
                     File file = imageToFile(image, name);
 
-                    new S3Task().execute(file);
+//                    new S3Task().execute(file);
 
                     recipeObject.put("imgUrl", "http://foodukate.s3.amazonaws.com/" + name);
                 }
@@ -341,7 +406,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
-    
+
     public void createIngredientsDialog(final Context activity) {
         ImageButton addIngredientButton = (ImageButton) ingredientDialog.findViewById(R.id.add_ingredient_button);
 
@@ -410,6 +475,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 //        recipeCourse = (EditText) findViewById(R.id.new_recipe_course);
         recipeSteps = (EditText) findViewById(R.id.new_recipe_steps);
         servings = (EditText) findViewById(R.id.new_recipe_serving);
+        cookingTime = (EditText) findViewById(R.id.new_recipe_cooking_time);
 
         recipeCuisineMulti = (MultiSpinner) findViewById(R.id.new_recipe_cuisine_multi);
         if (recipeCuisineMulti != null) {
@@ -439,6 +505,11 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
         sidesCheckbox = (CheckBox) findViewById(R.id.course_sides);
         appetizerCheckbox = (CheckBox) findViewById(R.id.course_appetizer);
 
+        categoryGlutenFreeCheckbox = (CheckBox) findViewById(R.id.category_gluten_free);
+        categoryNonVegCheckbox = (CheckBox) findViewById(R.id.category_non_veg);
+        categoryVegeterianCheckbox = (CheckBox) findViewById(R.id.category_vegeterian);
+        categoryVeganCheckbox = (CheckBox) findViewById(R.id.category_vegan);
+
         recipeImage = (ImageView) findViewById(R.id.new_recipe_image);
 
         ingredientListAdapter = new IngredientListAdapter(this, savedIngredientList);
@@ -460,6 +531,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 //    private EditText recipeCourse;
     private EditText recipeSteps;
     private EditText servings;
+    private EditText cookingTime;
 
     private MultiSpinner recipeCuisineMulti;
 
@@ -475,6 +547,11 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
     private CheckBox breakfastCheckbox;
     private CheckBox sidesCheckbox;
     private CheckBox appetizerCheckbox;
+
+    private CheckBox categoryVeganCheckbox;
+    private CheckBox categoryVegeterianCheckbox;
+    private CheckBox categoryGlutenFreeCheckbox;
+    private CheckBox categoryNonVegCheckbox;
 
     private ImageView recipeImage;
 

@@ -31,7 +31,7 @@ public interface RecipeApi {
     public Call<ResponseBody> getRecipeById(@Path("recipeId") String recipeId);
 
     @POST("recipes/create")
-    public Call<ResponseBody> addRecipe(@Body JSONObject recipe);
+    public Call<ResponseBody> addRecipe(@Body Recipe recipe);
 
     @GET("ingredients/search/{name}")
     public Call<ResponseBody> getIngredientsByName(@Path("name") String name);
