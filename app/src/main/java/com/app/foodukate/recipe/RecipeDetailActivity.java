@@ -20,6 +20,7 @@ import com.app.foodukate.foodukate.BaseActivity;
 import com.app.foodukate.foodukate.MainActivity;
 import com.app.foodukate.foodukate.R;
 import com.app.foodukate.notification.FollowBody;
+import com.app.foodukate.notification.ShareBody;
 import com.app.foodukate.notification.UserCallApi;
 import com.app.foodukate.user.UserSingleton;
 import com.app.foodukate.volley.VolleySingleton;
@@ -37,6 +38,7 @@ import retrofit2.Response;
 public class RecipeDetailActivity extends BaseActivity implements View.OnClickListener {
 
     String recipeSource = null;
+    String id = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
                     JSONObject recipeObject = new JSONObject(response.body().string());
                     JSONObject recipeDetailData = recipeObject.getJSONObject("recipe").getJSONObject("data");
                     recipeSource = recipeDetailData.getString("source");
+                    id = recipeDetailData.getString("id");
                     loadImageandText(recipeDetailData);
                     loadFollowStar();
 
@@ -162,6 +165,30 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.menu_item_share: {
                 UserSingleton loginUser = UserSingleton.getInstance();
+                final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
+                ShareBody sb = new ShareBody();
+                sb.setLoggedInUsrEmail(loginUser.getEmail());
+                sb.setRecipeId(id);
+                Call<ResponseBody> response = userApi.shareRecipe(sb);
+                response.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        try {
+                            if (response.isSuccessful()) {
+                                Log.e(TAG, response.body().string());
+                            } else {
+                                Log.e(TAG, response.errorBody().toString());
+                            }
+                        } catch (IOException e) {
+                            Log.e(TAG, "onResponse: IOException: " + e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e(TAG, "Enqueue: " + t.getMessage());
+                    }
+                });
                 break;
             }
             case R.id.menu_item_follow: {
