@@ -1,5 +1,7 @@
 package com.app.foodukate.recipe;
 
+import com.app.foodukate.recipe.ingredients.Ingredient;
+
 import java.util.ArrayList;
 
 /**
@@ -23,7 +25,7 @@ public class RecipeBuilder {
     ArrayList<String> courses;
     ArrayList<String> cuisines;
     ArrayList<String> categories;
-//  TODO  ArrayList<String> ingredients;
+    ArrayList<Ingredient> ingredients;
 
     public Recipe build() {
         return new Recipe(this);
@@ -101,6 +103,11 @@ public class RecipeBuilder {
 
     public RecipeBuilder withServings(String servings){
         this.servings = servings;
+        return this;
+    }
+
+    public RecipeBuilder withIngredients(ArrayList<Ingredient> ingredients) {
+        this.ingredients = ingredients;
         return this;
     }
 

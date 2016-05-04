@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.app.foodukate.client.RestService;
+import com.app.foodukate.common.Constant;
 import com.app.foodukate.foodukate.R;
 import com.app.foodukate.volley.VolleySingleton;
 
@@ -61,15 +62,16 @@ public class RecipeListFragment extends Fragment {
                 for (int i = 0; i < recipeJSONList.length(); i++) {
                     String name, rating, source, imgUrl, id;
                     JSONObject recipe = recipeJSONList.getJSONObject(i);
+
                     name = recipe.getString("name");
                     try{
                         imgUrl = recipe.getString("imgUrl");
+                        if (imgUrl.equals("") || imgUrl == null){
+                            imgUrl = Constant.NO_IMG_URL;
+                        }
                     }
                     catch (JSONException e){
-                        imgUrl = "http://www.vishmax.com/en/innovattive-cms/themes/themax-theme-2015/images/no-image-found.gif";
-                    }
-                    if (imgUrl.equals("") || imgUrl == null){
-                        imgUrl = "http://www.vishmax.com/en/innovattive-cms/themes/themax-theme-2015/images/no-image-found.gif";
+                        imgUrl = Constant.NO_IMG_URL;
                     }
                     id = recipe.getString("id");
                     rating = recipe.getString("rating");

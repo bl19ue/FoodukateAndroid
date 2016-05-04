@@ -32,6 +32,8 @@
     <string name="servings">Servings</string>
     <string name="categories">Categories</string>
     <string name="cookingTime">Cooking Time (in mins)</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 
     <string name="loading">Loading…</string>
 

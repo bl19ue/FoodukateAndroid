@@ -178,9 +178,9 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
             stepsArray.add(step);
         }
 
-        JSONArray ingredients = new JSONArray();
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
         for(int i=0;i<savedIngredientList.size();i++) {
-            ingredients.put(savedIngredientList.get(i).string());
+            ingredients.add(savedIngredientList.get(i));
         }
 
         Recipe newRecipe = new RecipeBuilder()
@@ -192,6 +192,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                 .withSource(UserSingleton.getInstance().getEmail())
                 .withCookingTime(cookingTime.getText().toString())
                 .withSteps(stepsArray)
+                .withIngredients(ingredients)
                 .build();
         return newRecipe;
 
@@ -409,6 +410,8 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 
     public void createIngredientsDialog(final Context activity) {
         ImageButton addIngredientButton = (ImageButton) ingredientDialog.findViewById(R.id.add_ingredient_button);
+        Button cancelDialogButton = (Button) ingredientDialog.findViewById(R.id.cancel_button);
+        Button confirmDialogButton= (Button) ingredientDialog.findViewById(R.id.confirm_button);
 
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override

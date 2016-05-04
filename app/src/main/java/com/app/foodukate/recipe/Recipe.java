@@ -3,6 +3,7 @@ package com.app.foodukate.recipe;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.app.foodukate.recipe.ingredients.Ingredient;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -30,6 +31,7 @@ public class Recipe {
         this.courses = recipeBuilder.courses;
         this.cuisines = recipeBuilder.cuisines;
         this.categories = recipeBuilder.categories;
+        this.ingredients = recipeBuilder.ingredients;
     }
 
     public String getId() { return _id; }
@@ -62,6 +64,8 @@ public class Recipe {
 
     public ArrayList<String> getCategories() { return categories; }
 
+    public ArrayList<Ingredient> getIngredients() { return ingredients; }
+
     @Expose @SerializedName("id") private String id;
     @Expose private String _id;
     @Expose @SerializedName("name") private String name;
@@ -79,7 +83,7 @@ public class Recipe {
     @Expose @SerializedName("cuisines") private ArrayList<String> cuisines;
     @Expose @SerializedName("categories") private ArrayList<String> categories;
 
-//  TODO  @Expose private ArrayList<String> ingredients;
+    @Expose @SerializedName("ingredients") private ArrayList<Ingredient> ingredients;
 
 }
 

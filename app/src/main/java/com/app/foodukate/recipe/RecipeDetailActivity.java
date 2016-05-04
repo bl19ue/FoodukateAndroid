@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.app.foodukate.client.RestService;
+import com.app.foodukate.common.Constant;
 import com.app.foodukate.foodukate.BaseActivity;
 import com.app.foodukate.foodukate.MainActivity;
 import com.app.foodukate.foodukate.R;
@@ -52,9 +53,6 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
 
         ImageButton followBtn = (ImageButton) findViewById(R.id.menu_item_follow);
         followBtn.setOnClickListener(this);
-
-        ImageButton followUserBtn = (ImageButton) findViewById(R.id.follow_user_button);
-        followUserBtn.setOnClickListener(this);
 
         final RecipeApi recipeApi = (RecipeApi) RestService.getService(RecipeApi.class);
         Call<ResponseBody> responseBodyCall = recipeApi.getRecipeById(recipeId);
@@ -127,18 +125,17 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
             }
             try{
                 imgUrl = recipeDetail.getString("imgUrl");
+                if (imgUrl.equals("") || imgUrl == null){
+                    imgUrl = Constant.NO_IMG_URL;
+                }
             }
             catch (JSONException e){
-                imgUrl = "http://www.vishmax.com/en/innovattive-cms/themes/themax-theme-2015/images/no-image-found.gif";
-            }
-            if (imgUrl.equals("") || imgUrl == null){
-                imgUrl = "http://www.vishmax.com/en/innovattive-cms/themes/themax-theme-2015/images/no-image-found.gif";
+                imgUrl = Constant.NO_IMG_URL;
             }
             recipeDetailName.setText((!name.equals("") && name != null) ? name : "No name");
             recipeDetailRating.setText((!rating.equals("") && rating != null) ? rating : "Not rated yet");
             recipeDetailSource.setText(source);
 
-            imgUrl = recipeDetail.getString("imgUrl");
             ImageLoader imageLoader = VolleySingleton.getInstance().getImageLoader();
             recipeDetailImage.setImageUrl(imgUrl, imageLoader);
 
@@ -166,9 +163,6 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
             }
             case R.id.menu_item_follow: {
                 Toast.makeText(RecipeDetailActivity.this, "Follow Btn Clicked", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.follow_user_button: {
                 UserSingleton loginUser = UserSingleton.getInstance();
                 final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
                 FollowBody fb = new FollowBody();
