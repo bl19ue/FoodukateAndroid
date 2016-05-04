@@ -16,4 +16,7 @@ public interface UserCallApi {
 
     @PUT("users/follow")
     public Call<ResponseBody> followUser(@Body FollowBody body);
+
+    @PUT("users/share")
+    public Call<ResponseBody> shareRecipe(@Body ShareBody body);
 }
