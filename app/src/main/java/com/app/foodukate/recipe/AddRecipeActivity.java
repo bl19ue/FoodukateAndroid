@@ -183,7 +183,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
             ingredients.add(savedIngredientList.get(i));
         }
 
-        Recipe newRecipe = new RecipeBuilder()
+        RecipeBuilder recipeBuilder = new RecipeBuilder()
                 .withName(name)
                 .withCourses(courses)
                 .withCategories(categories)
@@ -192,8 +192,25 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                 .withSource(UserSingleton.getInstance().getEmail())
                 .withCookingTime(cookingTime.getText().toString())
                 .withSteps(stepsArray)
-                .withIngredients(ingredients)
-                .build();
+                .withIngredients(ingredients);
+
+        try {
+            if (recipeImage != null && recipeImage.getDrawable() != null) {
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) recipeImage.getDrawable();
+                Bitmap image = bitmapDrawable.getBitmap();
+
+                String imageName = UUID.randomUUID().toString() + ".jpg";
+                File file = imageToFile(image, name);
+
+                new S3Task().execute(file);
+
+                recipeBuilder.withImageUrl("http://foodukate.s3-us-west-1.amazonaws.com/" + imageName);
+            }
+        } catch(Exception e) {
+            Log.e(TAG, "createRecipeJSONObject: Image:" + e.getMessage());
+        }
+
+        Recipe newRecipe = recipeBuilder.build();
         return newRecipe;
 
     }
@@ -466,6 +483,20 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ingredientNameChanged = false;
                 ingredientName.dismissDropDown();
+            }
+        });
+
+        cancelDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ingredientDialog.hide();
+            }
+        });
+
+        confirmDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ingredientDialog.hide();
             }
         });
 
