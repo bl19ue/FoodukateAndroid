@@ -6,10 +6,11 @@
     <color name="gray">#C2C3C8</color>
     <color name="list_background">#424242</color>
 
-    <color name="colorPrimary">#125688</color>
-    <color name="colorPrimaryDark">#125688</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
     <color name="textColorPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#7986CB</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
-    <color name="colorAccent">#c8e8ff</color>
+    <color name="colorAccent">#e74c3c</color>
 </resources>

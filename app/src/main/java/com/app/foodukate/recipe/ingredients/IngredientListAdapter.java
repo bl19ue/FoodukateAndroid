@@ -1,6 +1,8 @@
 package com.app.foodukate.recipe.ingredients;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +46,8 @@ public class IngredientListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        MyViewHolder myViewHolder;
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final MyViewHolder myViewHolder;
 
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.ingredient_add_row, parent, false);
@@ -55,11 +57,12 @@ public class IngredientListAdapter extends BaseAdapter {
             myViewHolder = (MyViewHolder) convertView.getTag();
         }
 
-        final Ingredient ingredient = ingredientList.get(position);
+        final Ingredient ingredient = AddRecipeActivity.savedIngredientList.get(position);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this.context,
                 android.R.layout.simple_spinner_item, ingredient.getLabels());
 
+        myViewHolder.reference = position;
         myViewHolder.ingredientQuantity.setText(ingredient.getQuantity());
         myViewHolder.ingredientName.setText(ingredient.getName());
         myViewHolder.ingredientLabel.setAdapter(spinnerAdapter);
@@ -71,6 +74,29 @@ public class IngredientListAdapter extends BaseAdapter {
             }
         });
 
+        myViewHolder.ingredientQuantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Ingredient thisIngredient = AddRecipeActivity.savedIngredientList.get(myViewHolder.reference);
+                if(thisIngredient != null) {
+                    thisIngredient.setQuantity(myViewHolder.ingredientQuantity.getText().toString());
+
+                    AddRecipeActivity.savedIngredientList.set(myViewHolder.reference, thisIngredient);
+                    AddRecipeActivity.ingredientListAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         return convertView;
     }
 
@@ -79,6 +105,7 @@ public class IngredientListAdapter extends BaseAdapter {
         Spinner ingredientLabel;
         TextView ingredientName;
         ImageButton removeIngredient;
+        int reference;
 
         public MyViewHolder(View item) {
             ingredientQuantity = (EditText) item.findViewById(R.id.ingredient_row_quantity);

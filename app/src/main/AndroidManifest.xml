@@ -3,6 +3,8 @@
     package="com.app.foodukate.foodukate" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- [START gcm_permission] -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -72,7 +74,12 @@
         </activity>
         <activity
             android:name="com.app.foodukate.recipe.AddRecipeActivity"
-            android:label="@string/title_activity_add_recipe" >
+            android:label="@string/title_activity_add_recipe"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name="com.app.foodukate.restaurant.RestaurantListActivity"
+            android:parentActivityName=".MainActivity">
         </activity>
 
         <receiver

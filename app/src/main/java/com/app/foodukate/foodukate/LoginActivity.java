@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.app.foodukate.common.GoogleSingleton;
 import com.app.foodukate.recipe.AddRecipeActivity;
 import com.app.foodukate.recipe.RecipeDetailActivity;
 import com.app.foodukate.client.RestService;
@@ -81,6 +82,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 //.addConnectionCallbacks(this)
                 .build();
         // [END build_client]
+
+        // Set the singleton
+        new GoogleSingleton(mGoogleApiClient);
 
         // [START customize_button]
         // Customize sign-in button. The sign-in button can be displayed in

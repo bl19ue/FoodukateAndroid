@@ -1,5 +1,8 @@
 package com.app.foodukate.recipe.ingredients;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -10,6 +13,7 @@ public class Ingredient {
         this._id = _id;
         this.name = name;
         this.labels = labels;
+        this.label = (labels != null && labels.size() > 0 && labels.get(0) != null) ? labels.get(0) : "";
     }
 
     public String get_id() {
@@ -32,8 +36,13 @@ public class Ingredient {
         this.quantity = quantity;
     }
 
-    private String _id;
-    private String name;
-    private ArrayList<String> labels;
-    private String quantity;
+    public String string() {
+        return quantity + " " + labels.get(0) + " " + name;
+    }
+
+    @Expose @SerializedName("_id") private String _id;
+    @Expose @SerializedName("name") private String name;
+    @Expose @SerializedName("labels") private ArrayList<String> labels;
+    @Expose @SerializedName("label") private String label;
+    @Expose @SerializedName("quantity") private String quantity;
 }
