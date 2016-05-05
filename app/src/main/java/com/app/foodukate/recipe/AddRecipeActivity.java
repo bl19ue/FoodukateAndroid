@@ -415,6 +415,8 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                     Log.e(TAG, "handleIngredientsResponse: JSONException: " + e.getMessage());
                 } catch (IOException e) {
                     Log.e(TAG, "handleIngredientsResponse: IOException: " + e.getMessage());
+                } catch (Exception e) {
+                    Log.e(TAG, "handleIngredientsResponse: Exception: " + e.getMessage());
                 }
             }
 

@@ -89,6 +89,7 @@ public class RestaurantListActivity extends BaseActivity implements
 
             @Override
             public void afterTextChanged(Editable s) {
+                restaurants.clear();
                 if (zipcodeAvailable) {
                     Call<ResponseBody> restaurantResponse =
                             restaurantApi.getRestaurants(recipeName.getText().toString(), "94105"); //zipcode);
@@ -121,6 +122,8 @@ public class RestaurantListActivity extends BaseActivity implements
                                 Log.e(TAG, "handleRestaurantResponse: JSONException:" + e.getMessage());
                             } catch (IOException e) {
                                 Log.e(TAG, "handleRestaurantResponse: IOException:" + e.getMessage());
+                            } catch (Exception e) {
+                                Log.e(TAG, "handleRestaurantResponse: Exception:" + e.getMessage());
                             }
                         }
 
