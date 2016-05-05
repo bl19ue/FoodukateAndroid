@@ -13,6 +13,7 @@
     <string name="title_activity_recipe_detail"></string>
     <string name="title_activity_scanned_list"></string>
     <string name="title_activity_base"></string>
+    <string name="update_profile">Update Profile</string>
 
     <string name="userName">Name</string>
     <string name="email">Email</string>

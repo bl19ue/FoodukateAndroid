@@ -37,6 +37,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -50,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final int SIGN_IN_CODE = 9001;
     private ProgressDialog mProgressDialog;
     String userEmail;
+    UserSingleton loginUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +152,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 proficPic = acct.getPhotoUrl().toString();
             }
             userEmail = personEmail;
-            UserSingleton loginUser = UserSingleton.getInstance();
+            loginUser = UserSingleton.getInstance();
             loginUser.setName(personName);
             loginUser.setEmail(personEmail);
             loginUser.setPicUrl(proficPic);
@@ -172,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
+            mProgressDialog.dismiss();
         }
     }
 
@@ -256,12 +260,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     if(userObject.length() == 0){
                         Intent register = new Intent(LoginActivity.this, RegistrationActivity.class);
                         startActivity(register);
-                        finish();
                     }
                     else{
+                        JSONObject userObj = userObject.getJSONObject(0);
+                        if(userObj.has("phoneno")) {
+                            loginUser.setPhoneNo(userObj.get("phoneno").toString());
+                        }
+                        JSONArray interests = (JSONArray) userObj.get("interests");
+                        int i=0;
+                        while(i<interests.length()) {
+                            loginUser.getInterests().add(interests.getString(i));
+                            i++;
+                        }
                         Intent mainactivity = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(mainactivity);
-                        finish();
                     }
 
                 } catch (IOException e) {

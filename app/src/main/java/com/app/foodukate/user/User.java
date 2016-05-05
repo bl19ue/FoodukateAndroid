@@ -6,8 +6,8 @@ package com.app.foodukate.user;
 public class User {
     private String name;
     private String email;
-    private String imgUrl;
-    private String phoneNo;
+    private String imgurl;
+    private String phoneno;
     private String[] interests;
 
     public String getName() {
@@ -26,20 +26,20 @@ public class User {
         this.email = email;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImgurl() {
+        return imgurl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
     }
 
     public String getPhoneNo() {
-        return phoneNo;
+        return phoneno;
     }
 
     public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
+        this.phoneno = phoneNo;
     }
 
     public String[] getInterest() {

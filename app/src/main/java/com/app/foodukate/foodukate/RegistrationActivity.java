@@ -30,8 +30,10 @@ import com.app.foodukate.user.UserApi;
 import com.app.foodukate.user.UserSingleton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
@@ -111,11 +113,11 @@ public class RegistrationActivity extends AppCompatActivity implements GoogleApi
             Toast.makeText(this, "Select atleast one cuisine of interest!", Toast.LENGTH_LONG).show();
         }
         else {
-            ArrayList<String> interests = new ArrayList<>();
+            final ArrayList<String> interests = new ArrayList<>();
             String item;
             int count = listview.getCount();
             EditText editText = (EditText) findViewById(R.id.phoneNoVal);
-            String phoneNo = editText.getText().toString();
+            final String phoneNo = editText.getText().toString();
 
             for (int i = 0; i < count; i++) {
                 if (checkedItems.get(i)) {
@@ -127,7 +129,7 @@ public class RegistrationActivity extends AppCompatActivity implements GoogleApi
             User user = new User();
             user.setName(loggedInUser.getName());
             user.setEmail(loggedInUser.getEmail());
-            user.setImgUrl(loggedInUser.getPicUrl());
+            user.setImgurl(loggedInUser.getPicUrl());
             user.setPhoneNo(phoneNo);
             user.setInterest(interests.toArray(new String[0]));
             Call<ResponseBody> response = userApi.createUser(user);
@@ -136,9 +138,12 @@ public class RegistrationActivity extends AppCompatActivity implements GoogleApi
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
                         if (response.isSuccessful()) {
+                            loggedInUser.setPhoneNo(phoneNo);
+                            loggedInUser.setInterests(interests);
                             Log.e(TAG, response.body().string());
                             Intent mainActivityIntent = new Intent(RegistrationActivity.this, MainActivity.class);
                             startActivity(mainActivityIntent);
+                            finish();
                         }
                         else{
                             Log.e(TAG,response.errorBody().toString());
