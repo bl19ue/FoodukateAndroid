@@ -48,8 +48,8 @@ public class RestaurantListAdapter extends BaseAdapter{
         }
         final Restaurant restaurant = restaurantList.get(position);
         myViewHolder.restaurantName.setText(restaurant.getName());
-        myViewHolder.restaurantLocation.setText("Test Location");
-        myViewHolder.restaurantAddress.setText("Test Address");
+        myViewHolder.restaurantLocation.setText(restaurant.getLocation());
+        myViewHolder.restaurantAddress.setText(restaurant.getAddress());
         return convertView;
     }
 

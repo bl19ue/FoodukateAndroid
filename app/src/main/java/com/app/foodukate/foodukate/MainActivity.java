@@ -215,11 +215,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 startActivity(addRecipeIntent);
                 break;
             case R.id.fab_search_recipe_by_location:
-                String search_query = handleIntent(MainActivity.this.getIntent());
-                String location = "";
                 Intent searchByLocationIntent = new Intent(MainActivity.this, RestaurantListActivity.class);
-                searchByLocationIntent.putExtra("query", search_query);
-                searchByLocationIntent.putExtra("location", location);
                 startActivity(searchByLocationIntent);
                 break;
         }
