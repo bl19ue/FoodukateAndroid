@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@color/imageBorder"
+        android:background="@color/colorDivider"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="2dp"
         android:padding="1dp">
@@ -41,7 +41,11 @@
                 android:capitalize="words"
                 android:hint="@string/name"
                 android:maxLines="1"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -60,7 +64,11 @@
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
         </android.support.design.widget.TextInputLayout>
 

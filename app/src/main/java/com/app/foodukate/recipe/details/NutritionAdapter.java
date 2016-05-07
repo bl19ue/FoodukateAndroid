@@ -52,8 +52,23 @@ public class NutritionAdapter extends BaseAdapter{
             myViewHolder = (MyViewHolder) convertView.getTag();
         }
         final String nutritionLabel = mapKeys[position];
-        final String nutritionValue = nutritionMap.get(nutritionLabel).toString();
+        String nutritionValue = nutritionMap.get(nutritionLabel).toString();
         myViewHolder.nutritionLabel.setText(nutritionLabel.toUpperCase());
+        switch (nutritionLabel){
+            case "energy":
+                nutritionValue += " kcal";
+                break;
+            case "iron":
+                nutritionValue += " mg";
+                break;
+            case "calcium":
+                nutritionValue += " mg";
+                break;
+            default:
+                nutritionValue += " g";
+                break;
+        }
+
         myViewHolder.nutritionValue.setText(nutritionValue);
         return convertView;
     }

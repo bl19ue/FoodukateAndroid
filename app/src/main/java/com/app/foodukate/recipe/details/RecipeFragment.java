@@ -7,17 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.app.foodukate.recipe.RecipeDetailParser;
 import com.app.foodukate.foodukate.R;
+import com.app.foodukate.recipe.Recipe;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +41,7 @@ public class RecipeFragment extends Fragment {
         TextView recipeCuisineTextView = (TextView) view.findViewById(R.id.recipe_cuisine);
         TextView recipeCategoryTextView = (TextView) view.findViewById(R.id.recipe_category);
         TextView recipeCourseTextView = (TextView) view.findViewById(R.id.recipe_course);
+        TextView recipeCookingTimeTextView = (TextView) view.findViewById(R.id.recipe_cooking_time);
         try {
             recipeDetail = new JSONObject(getArguments().getString("recipeDetail"));
         } catch (Exception e) {
@@ -50,32 +49,38 @@ public class RecipeFragment extends Fragment {
         }
         if (recipeDetail != null) {
             try {
-                String recipeSourceURL = recipeDetail.getJSONObject("source").getString("sourceRecipeUrl");
-                JSONArray categories = recipeDetail.getJSONArray("categories");
-                JSONArray cuisines = recipeDetail.getJSONArray("cuisines");
-                JSONArray courses = recipeDetail.getJSONArray("course");
-                JSONArray recipeSteps = recipeDetail.getJSONArray("steps");
-                recipeSourceURLTextView.append(recipeSourceURL);
-                displayJSONArrayInTextView(categories, recipeCategoryTextView);
-                displayJSONArrayInTextView(cuisines, recipeCuisineTextView);
-                displayJSONArrayInTextView(courses, recipeCourseTextView);
-                displayJSONArrayInTextView(recipeSteps, recipeStepsTextView);
+                Recipe recipe = RecipeDetailParser.parseRecipeDetail(recipeDetail);
+                if (recipe!=null){
+                    String sourceURL = recipe.getSourceUrl();
+                    String cookingTime = recipe.getCookingTime();
 
+                    if(sourceURL!=null && !sourceURL.equals("")){
+                        recipeSourceURLTextView.append(sourceURL);
+                        recipeSourceURLTextView.setVisibility(View.VISIBLE);
+                    }
+                    if(cookingTime!=null && !cookingTime.equals("")){
+                        recipeCookingTimeTextView.append(cookingTime + " mins");
+                        recipeCookingTimeTextView.setVisibility(View.VISIBLE);
+                    }
+                    displayArrayInTextView(recipe.getCategories(), recipeCategoryTextView);
+                    displayArrayInTextView(recipe.getCuisines(), recipeCuisineTextView);
+                    displayArrayInTextView(recipe.getCourses(), recipeCourseTextView);
+                    displayArrayInTextView(recipe.getSteps(), recipeStepsTextView);
+                }
             } catch (Exception e) {
-                Log.e(TAG, "onCreateView: JSONException: " + e.getMessage());
+                Log.e(TAG, "onCreateView: " + e.getMessage());
             }
         }
 
         return view;
     }
 
-    private void displayJSONArrayInTextView(JSONArray jsonArrayToBeConverted,
+    private void displayArrayInTextView(ArrayList<String> arrayList,
                                             TextView textView) {
-        int length = jsonArrayToBeConverted.length();
-
+        int length = arrayList.size();
         for (int i = 0; i < length; i++) {
             try {
-                String value = jsonArrayToBeConverted.getString(i);
+                String value = arrayList.get(i);
                 if (i == 0) {
                     textView.setVisibility(View.VISIBLE);
                     textView.append(value);
@@ -83,7 +88,7 @@ public class RecipeFragment extends Fragment {
                     textView.append(", " + value);
                 }
             } catch (Exception e) {
-                Log.e(TAG, "onCreateView: JSONConversion: " + e.getMessage());
+                Log.e(TAG, "onCreateView: " + e.getMessage());
             }
         }
     }

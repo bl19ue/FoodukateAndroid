@@ -19,6 +19,7 @@ public class RecipeBuilder {
     String thumbnailUrl;
     String miscellaneous;
     String servings;
+    String sourceUrl;
 
     ArrayList<String> steps;
     ArrayList<String> alias;
@@ -68,6 +69,11 @@ public class RecipeBuilder {
 
     public RecipeBuilder withThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+        return this;
+    }
+
+    public RecipeBuilder withSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
         return this;
     }
 

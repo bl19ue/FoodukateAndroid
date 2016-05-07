@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/transparent"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@drawable/add" />
 
     </LinearLayout>
 

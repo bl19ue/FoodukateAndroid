@@ -101,7 +101,7 @@ public class RestaurantListActivity extends BaseActivity implements
                                 JSONObject restaurantResponse = new JSONObject(response.body().string());
                                 JSONArray dataArray = restaurantResponse.getJSONArray("data");
 
-                                for(int i=0;i<dataArray.length();i++) {
+                                for (int i = 0; i < dataArray.length(); i++) {
                                     String _id = dataArray.getJSONObject(i).getString("_id");
                                     String name = dataArray.getJSONObject(i).getString("name");
                                     String locality = dataArray.getJSONObject(i).getString("locality");
@@ -164,7 +164,8 @@ public class RestaurantListActivity extends BaseActivity implements
     }
 
     public void getLocation() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
             // here to request the missing permissions, and then overriding
@@ -238,7 +239,7 @@ public class RestaurantListActivity extends BaseActivity implements
                         LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             } else {
                 int a = 2;
-                a= a+a;
+                a = a + a;
             }
         }
     }
@@ -257,12 +258,12 @@ public class RestaurantListActivity extends BaseActivity implements
     private String parseZipCode(String address) {
         String zipcode = "";
         int count = 0;
-        for(int i=0;i<address.length();i++) {
+        for (int i = 0; i < address.length(); i++) {
             char c = address.charAt(i);
-            if(Character.isDigit(c)) {
+            if (Character.isDigit(c)) {
                 count++;
                 zipcode += c;
-                if(count == 5) {
+                if (count == 5) {
                     break;
                 }
             } else {

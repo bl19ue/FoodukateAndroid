@@ -290,7 +290,7 @@
                     android:background="@color/colorAccent"
                     android:padding="6dp"
                     android:text="@string/addIngredients"
-                    android:textColor="@color/white"></android.support.v7.widget.AppCompatButton>
+                    android:textColor="@color/colorIconText"></android.support.v7.widget.AppCompatButton>
 
 
                 <!--<ImageView-->

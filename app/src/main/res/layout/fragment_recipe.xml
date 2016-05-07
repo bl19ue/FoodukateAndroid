@@ -9,7 +9,7 @@
         android:id="@+id/recipe_description_header"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:background="@color/black"
+        android:background="@color/fragmentsHeaderTextBackground"
         android:gravity="center"
         android:text="DETAILS"
         android:textColor="@color/white"
@@ -23,21 +23,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/textview_border"
-        android:textColor="@color/white"
+        android:textColor="@color/list_text_color"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="10dp"
         android:textSize="14sp"
         android:text="URL: "
+        android:visibility="gone"
         android:fontFamily="sans-serif-light" />
+
+    <TextView
+        android:id="@+id/recipe_cooking_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/textview_border"
+        android:textColor="@color/list_text_color"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp"
+        android:text="Cooking Time: "
+        android:visibility="gone"
+        android:fontFamily="sans-serif-light"/>
 
     <TextView
         android:id="@+id/recipe_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/textview_border"
-        android:textColor="@color/white"
+        android:textColor="@color/list_text_color"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
@@ -52,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/textview_border"
-        android:textColor="@color/white"
+        android:textColor="@color/list_text_color"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
@@ -68,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/recipe_course"
         android:background="@drawable/textview_border"
-        android:textColor="@color/white"
+        android:textColor="@color/list_text_color"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
@@ -83,7 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/list_background"
-        android:textColor="@color/white"
+        android:textColor="@color/list_text_color"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
@@ -98,7 +114,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/list_background"
-        android:textColor="@color/white"
+        android:textColor="@color/list_text_color"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
@@ -108,22 +124,5 @@
         android:text=""
         android:fontFamily="sans-serif-light"/>
 
-    <!--<ListView-->
-        <!--android:id="@+id/recipe_category_list"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/list_background"></ListView>-->
-
-    <!--<ListView-->
-        <!--android:id="@+id/recipe_cuisine_list"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/list_background"></ListView>-->
-
-    <!--<ListView-->
-        <!--android:id="@+id/recipe_course_list"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/list_background"></ListView>-->
 
 </LinearLayout>

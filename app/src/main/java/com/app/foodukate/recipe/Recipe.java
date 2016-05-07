@@ -22,6 +22,7 @@ public class Recipe {
         this.rating = recipeBuilder.rating;
         this.imageUrl = recipeBuilder.imageUrl;
         this.cookingTime = recipeBuilder.cookingTime;
+        this.sourceUrl = recipeBuilder.sourceUrl;
         this.thumbnailUrl = recipeBuilder.thumbnailUrl;
         this.miscellaneous = recipeBuilder.miscellaneous;
         this.servings = recipeBuilder.servings;
@@ -41,6 +42,8 @@ public class Recipe {
     public String getName() { return name; }
 
     public String getSource() { return source; }
+
+    public String getSourceUrl() { return sourceUrl; }
 
     public String getRating() { return rating; }
 
@@ -70,6 +73,7 @@ public class Recipe {
     @Expose private String _id;
     @Expose @SerializedName("name") private String name;
     @Expose @SerializedName("source") private String source;
+    private String sourceUrl;
     @Expose @SerializedName("rating") private String rating;
     @Expose @SerializedName("imgUrl") private String imageUrl;
     @Expose @SerializedName("cookingTime") private String cookingTime;

@@ -1,14 +1,10 @@
 package com.app.foodukate.recipe;
 
-import android.content.Intent;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,9 +12,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.app.foodukate.client.RestService;
-import com.app.foodukate.common.Constant;
 import com.app.foodukate.foodukate.BaseActivity;
-import com.app.foodukate.foodukate.MainActivity;
 import com.app.foodukate.foodukate.R;
 import com.app.foodukate.notification.FollowBody;
 import com.app.foodukate.notification.ShareBody;
@@ -84,13 +78,15 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
                 try {
                     Bundle bundle = new Bundle();
                     JSONObject recipeObject = new JSONObject(response.body().string());
-                    JSONObject recipeDetailData = recipeObject.getJSONObject("recipe").getJSONObject("data");
-                    recipeSource = recipeDetailData.getString("source");
-                    id = recipeDetailData.getString("id");
-                    loadImageandText(recipeDetailData);
-                    loadFollowStar();
-
-                    bundle.putString("recipeDetail", recipeDetailData.toString());
+                    JSONObject recipeDetail = recipeObject.getJSONObject("recipe").getJSONObject("data");
+                    if(recipeDetail!=null){
+                        Recipe recipe = RecipeDetailParser.parseRecipeDetail(recipeDetail);
+                        if (recipe!=null){
+                            loadImageandText(recipe);
+                            loadFollowStar();
+                        }
+                    }
+                    bundle.putString("recipeDetail", recipeDetail.toString());
                     RecipeDetailPagerAdapter recipeDetailPagerAdapter =
                             new RecipeDetailPagerAdapter(getSupportFragmentManager(), bundle);
 
@@ -112,40 +108,36 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
-    private void loadImageandText(JSONObject recipeDetail) {
+    private void loadImageandText(Recipe recipe) {
+
         final NetworkImageView recipeDetailImage = (NetworkImageView) this.findViewById(R.id.recipe_detail_image);
         final TextView recipeDetailName = (TextView) this.findViewById(R.id.recipe_detail_name);
         final TextView recipeDetailSource = (TextView) this.findViewById(R.id.recipe_detail_source);
         final TextView recipeDetailRating = (TextView) this.findViewById(R.id.recipe_detail_rating);
         String name, rating, source, imgUrl;
+
         try {
-            name = recipeDetail.getString("name");
-            rating = recipeDetail.getString("rating");
-            try{
-                source = "by " + recipeDetail.getJSONObject("source").getString("sourceDisplayName");
-            }catch (JSONException e){
-                source = "by " + recipeDetail.getString("source");
+            name = recipe.getName();
+            rating = recipe.getRating();
+            source = recipe.getSource();
+            imgUrl = recipe.getImageUrl();
+            if(name!=null && !name.equals("")){
+                recipeDetailName.setText(name);
             }
-            try{
-                imgUrl = recipeDetail.getString("imgUrl");
-                if (imgUrl.equals("") || imgUrl == null){
-                    imgUrl = Constant.NO_IMG_URL;
-                }
+            if(rating!=null && !rating.equals("")) {
+                recipeDetailRating.setText(rating);
             }
-            catch (JSONException e){
-                imgUrl = Constant.NO_IMG_URL;
+            if(source!=null && !source.equals("")){
+                recipeDetailSource.setText(source);
             }
-            recipeDetailName.setText((!name.equals("") && name != null) ? name : "No name");
-            recipeDetailRating.setText((!rating.equals("") && rating != null) ? rating : "Not rated yet");
-            recipeDetailSource.setText(source);
+            if(imgUrl!=null && !imgUrl.equals("")){
+                ImageLoader imageLoader = VolleySingleton.getInstance().getImageLoader();
+                recipeDetailImage.setImageUrl(imgUrl, imageLoader);
+            }
 
-            ImageLoader imageLoader = VolleySingleton.getInstance().getImageLoader();
-            recipeDetailImage.setImageUrl(imgUrl, imageLoader);
-
-        } catch (JSONException e) {
-            Log.e(TAG, "handleResponse: JSONException: " + e.getMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "handleResponse: " + e.getMessage());
         }
-
     }
 
     private void loadFollowStar() {
