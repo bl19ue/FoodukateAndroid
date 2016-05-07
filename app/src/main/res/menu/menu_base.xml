@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.app.foodukate.foodukate.BaseActivity">
 
-    <!--<item android:id="@+id/action_search"-->
-        <!--android:title="Search"-->
-        <!--android:icon="@drawable/search"-->
-        <!--app:showAsAction="ifRoom"/>-->
-
     <item android:id="@+id/action_search"
         android:title="@string/search_title"
         android:icon="@drawable/search"
@@ -16,7 +11,7 @@
 
     <item android:id="@+id/action_camera"
         android:title="@string/camera"
-        android:icon="@drawable/camera"
+        android:icon="@drawable/camera_icon"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/update_profile"

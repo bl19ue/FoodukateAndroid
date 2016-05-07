@@ -18,8 +18,8 @@
         fab:menu_animationDelayPerItem="50"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
-        fab:menu_colorNormal="#DA4336"
-        fab:menu_colorPressed="#E75043"
+        fab:menu_colorNormal="@color/colorAccent"
+        fab:menu_colorPressed="@color/colorAccentPressed"
         fab:menu_colorRipple="#99FFFFFF"
         fab:menu_fab_hide_animation="@anim/fab_scale_down"
         fab:menu_fab_label="Close"
@@ -57,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_input_add"
+            fab:fab_colorNormal="@color/colorAccent"
             fab:fab_label="Add new Recipe"
             fab:fab_size="mini" />
 
@@ -65,6 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_dialog_map"
+            fab:fab_colorNormal="@color/colorAccent"
             fab:fab_label="Search By Location"
             fab:fab_size="mini" />
 

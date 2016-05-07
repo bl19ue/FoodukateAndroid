@@ -234,7 +234,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void setup() {
-        this.getSupportActionBar().hide();
+        try{
+            if(this.getSupportActionBar()!=null){
+                this.getSupportActionBar().hide();
+            }
+        }catch (Exception e){
+            Log.e(TAG, e.toString());
+        }
         LinearLayout  linearLayout = (LinearLayout) findViewById(R.id.loginScreen);
         linearLayout.setBackgroundResource(R.drawable.foodukate_main_e);
     }
