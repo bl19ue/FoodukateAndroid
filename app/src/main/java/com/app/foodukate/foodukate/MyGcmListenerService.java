@@ -28,7 +28,11 @@ import android.util.Log;
 
 import com.app.foodukate.foodukate.MainActivity;
 import com.app.foodukate.foodukate.R;
+import com.app.foodukate.recipe.RecipeDetailActivity;
 import com.google.android.gms.gcm.GcmListenerService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -77,7 +81,12 @@ public class MyGcmListenerService extends GcmListenerService {
      * @param message GCM message received.
      */
     private void sendNotification(String message) {
-        Intent intent = new Intent(this, MainActivity.class);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(message);
+
+        Intent intent = new Intent(this, RecipeDetailActivity.class);
+        intent.putExtra("recipe_id",jsonObject.getString("recipe_id"));
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -85,8 +94,8 @@ public class MyGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.camera)
-                .setContentTitle("GCM Message")
-                .setContentText(message)
+                .setContentTitle("Foodukate")
+                .setContentText(jsonObject.getString("msg"))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
@@ -95,5 +104,8 @@ public class MyGcmListenerService extends GcmListenerService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
