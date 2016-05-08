@@ -222,6 +222,8 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                 new S3Task().execute(file);
 
                 recipeBuilder.withImageUrl("http://foodukate.s3-us-west-1.amazonaws.com/" + imageName);
+            } else {
+                recipeBuilder.withImageUrl("");
             }
         } catch (Exception e) {
             Log.e(TAG, "createRecipeJSONObject: Image:" + e.getMessage());
