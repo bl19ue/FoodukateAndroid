@@ -6,19 +6,6 @@
     tools:context="com.app.foodukate.recipe.details.RecipeFragment">
 
     <TextView
-        android:id="@+id/recipe_description_header"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@color/fragmentsHeaderTextBackground"
-        android:gravity="center"
-        android:text="DETAILS"
-        android:textColor="@color/white"
-        android:textScaleX="1"
-        android:textSize="18sp"
-        android:typeface="sans"
-        android:fontFamily="sans-serif-condensed"/>
-
-    <TextView
         android:id="@+id/recipe_source_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

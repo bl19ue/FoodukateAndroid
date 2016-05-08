@@ -50,6 +50,26 @@ public class RecipeDetailPagerAdapter extends FragmentPagerAdapter {
         return 3;
     }
 
+    @Override
+    public CharSequence getPageTitle(int position) {
+        CharSequence title = null;
+        switch(position) {
+            case 0: {
+                title = "Ingredients";
+                break;
+            }
+            case 1: {
+                title = "Nutritions";
+                break;
+            }
+            case 2: {
+                title = "Details";
+                break;
+            }
+        }
+        return title;
+    }
+
     private final Bundle bundle;
     private static final String TAG = "RecipePagerAdapter: ";
 }

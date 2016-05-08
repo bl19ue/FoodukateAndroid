@@ -76,11 +76,24 @@
 
         </LinearLayout>
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="false"
+            fab:tabGravity="fill"
+            fab:tabTextColor="@color/white"
+            android:background="@color/fragmentsHeaderTextBackground"
+            android:layout_alignParentStart="false"
+            android:layout_below="@+id/recipe_detail_image">
+
+        </android.support.design.widget.TabLayout>
+
         <android.support.v4.view.ViewPager
             android:id="@+id/recipe_detail_swipe"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:layout_below="@+id/recipe_detail_image" />
+            android:layout_below="@+id/tabs" />
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/menu"

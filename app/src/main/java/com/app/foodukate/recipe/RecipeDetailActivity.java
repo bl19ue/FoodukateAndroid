@@ -1,5 +1,6 @@
 package com.app.foodukate.recipe;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
@@ -91,7 +92,9 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
                             new RecipeDetailPagerAdapter(getSupportFragmentManager(), bundle);
 
                     ViewPager viewPager = (ViewPager) findViewById(R.id.recipe_detail_swipe);
+                    TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
                     viewPager.setAdapter(recipeDetailPagerAdapter);
+                    tabs.setupWithViewPager(viewPager);
 
                 } catch (IOException e) {
                     Log.e(TAG, "handleResponse: IOException: " + e.getMessage());
