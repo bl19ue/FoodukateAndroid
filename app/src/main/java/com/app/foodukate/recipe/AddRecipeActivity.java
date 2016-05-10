@@ -132,7 +132,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
 
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                recipeImage.getLayoutParams().height = 500;
+                recipeImage.getLayoutParams().height = 1400;
                 recipeImage.setLayoutParams(recipeImage.getLayoutParams());
                 recipeImage.setImageBitmap(bitmap);
             } catch (IOException e) {
@@ -217,7 +217,7 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
                 Bitmap image = bitmapDrawable.getBitmap();
 
                 String imageName = UUID.randomUUID().toString() + ".jpg";
-                File file = imageToFile(image, name);
+                File file = imageToFile(image, imageName);
 
                 new S3Task().execute(file);
 
@@ -232,103 +232,6 @@ public class AddRecipeActivity extends AppCompatActivity implements View.OnClick
         Recipe newRecipe = recipeBuilder.build();
         return newRecipe;
 
-    }
-
-    private JSONObject createRecipeJSONObject() {
-        JSONObject recipeObject = new JSONObject();
-        try {
-            recipeObject.put("name", recipeName.getText().toString());
-
-            JSONArray cuisines = new JSONArray();
-            cuisines.put(recipeCuisineMulti.getSelectedStrings());
-            recipeObject.put("cuisines", cuisines);
-
-            JSONArray courses = new JSONArray();
-            JSONArray categories = new JSONArray();
-
-            if (dessertsCheckbox.isChecked()) {
-                courses.put(dessertsCheckbox.getText());
-            }
-
-            if (soupCheckbox.isChecked()) {
-                courses.put(soupCheckbox.getText());
-            }
-
-            if (appetizerCheckbox.isChecked()) {
-                courses.put(appetizerCheckbox.getText());
-            }
-
-            if (beverageCheckbox.isChecked()) {
-                courses.put(beverageCheckbox.getText());
-            }
-
-            if (entreeCheckbox.isChecked()) {
-                courses.put(entreeCheckbox.getText());
-            }
-
-            if (sidesCheckbox.isChecked()) {
-                courses.put(sidesCheckbox.getText());
-            }
-
-            if (breakfastCheckbox.isChecked()) {
-                courses.put(breakfastCheckbox.getText());
-            }
-
-            if (categoryGlutenFreeCheckbox.isChecked()) {
-                categories.put(categoryGlutenFreeCheckbox.getText().toString());
-            }
-
-            if (categoryNonVegCheckbox.isChecked()) {
-                categories.put(categoryNonVegCheckbox.getText().toString());
-            }
-            if (categoryVeganCheckbox.isChecked()) {
-                categories.put(categoryVeganCheckbox.getText().toString());
-            }
-            if (categoryVegeterianCheckbox.isChecked()) {
-                categories.put(categoryVegeterianCheckbox.getText().toString());
-            }
-
-            recipeObject.put("course", courses);
-            recipeObject.put("categories", categories);
-            recipeObject.put("numberOfServings", servings.getText());
-
-            JSONArray stepsArray = new JSONArray();
-            String[] steps = recipeSteps.getText().toString().split("\n");
-            for (String step : steps) {
-                stepsArray.put(step);
-            }
-            recipeObject.put("steps", stepsArray);
-
-            JSONArray ingredients = new JSONArray();
-            for (int i = 0; i < savedIngredientList.size(); i++) {
-                ingredients.put(savedIngredientList.get(i).string());
-            }
-            recipeObject.put("ingredients", ingredients);
-
-            recipeObject.put("source", UserSingleton.getInstance().getEmail());
-            recipeObject.put("cookingTime", 25);
-
-            try {
-                if (recipeImage != null && recipeImage.getDrawable() != null) {
-                    BitmapDrawable bitmapDrawable = (BitmapDrawable) recipeImage.getDrawable();
-                    Bitmap image = bitmapDrawable.getBitmap();
-
-                    String name = UUID.randomUUID().toString() + ".jpg";
-                    File file = imageToFile(image, name);
-
-//                    new S3Task().execute(file);
-
-                    recipeObject.put("imgUrl", "http://foodukate.s3.amazonaws.com/" + name);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "createRecipeJSONObject: Image:" + e.getMessage());
-            }
-            return recipeObject;
-        } catch (JSONException e) {
-            Log.e(TAG, "createRecipeJSONObject: JSONException:" + e.getMessage());
-        }
-
-        return null;
     }
 
     private class S3Task extends AsyncTask<File, Integer, JSONObject> {
