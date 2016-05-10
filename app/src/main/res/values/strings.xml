@@ -42,8 +42,9 @@
 
     <!-- Content Description for images -->
     <string name="desc_google_icon">Google Logo</string>
+    <string name="desc_logo_icon">Foodukate Logo</string>
 
-    <string name="title_text">FoodUKate</string>
+    <string name="title_text">FooduKate</string>
     <!-- Server Client ID.  Valid Web OAuth 2.0 Client ID obtained from https://console.developers.google.com/ -->
     <string name="server_client_id">90069306861-a946af38mrln4tqna2t7l2rek5ep7m85.apps.googleusercontent.com</string>
     <string name="interests">Interests :</string>
