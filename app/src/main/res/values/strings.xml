@@ -35,6 +35,7 @@
     <string name="cookingTime">Cooking Time (in mins)</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="search_by_location_hint">Search By Location</string>
 
     <string name="loading">Loading…</string>
 

@@ -8,13 +8,22 @@
     android:orientation="vertical"
     tools:context="com.app.foodukate.restaurant.RestaurantListActivity">
 
-    <EditText
-        android:id="@+id/location_recipe_name"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_search_by_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:singleLine="true"
-        android:textSize="16sp"/>
+        android:paddingBottom="10dp">
+
+        <EditText
+            android:id="@+id/location_recipe_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_by_location_hint"
+            android:layout_marginLeft="16dp"
+            android:singleLine="true"
+            android:textSize="16sp"/>
+
+    </android.support.design.widget.TextInputLayout>
 
     <ListView
         android:id="@+id/restarant_location_list"
