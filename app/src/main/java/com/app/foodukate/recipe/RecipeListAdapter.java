@@ -61,7 +61,7 @@ public class RecipeListAdapter extends BaseAdapter {
         final Recipe recipe = recipeList.get(position);
         myViewHolder.recipeName.setText(recipe.getName());
         myViewHolder.recipeRating.setText(recipe.getRating());
-        myViewHolder.recipeSource.setText(recipe.getSource());
+        myViewHolder.recipeSource.setText("by " + recipe.getSource());
         myViewHolder.recipeImage.setImageUrl(recipe.getImageUrl(), imageLoader);
         myViewHolder.recipeImage.setOnClickListener(new RecipeItemClickListener(recipe.getRecipeId()));
 

@@ -82,6 +82,8 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
                     JSONObject recipeDetail = recipeObject.getJSONObject("recipe").getJSONObject("data");
                     if(recipeDetail!=null){
                         Recipe recipe = RecipeDetailParser.parseRecipeDetail(recipeDetail);
+                        recipeSource = recipe.getSource();
+                        id = recipe.getRecipeId();
                         if (recipe!=null){
                             loadImageandText(recipe);
                             loadFollowStar();
@@ -122,7 +124,7 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
         try {
             name = recipe.getName();
             rating = recipe.getRating();
-            source = recipe.getSource();
+            source = "by " + recipe.getSource();
             imgUrl = recipe.getImageUrl();
             if(name!=null && !name.equals("")){
                 recipeDetailName.setText(name);
@@ -160,7 +162,7 @@ public class RecipeDetailActivity extends BaseActivity implements View.OnClickLi
                 final UserCallApi userApi = (UserCallApi) RestService.getService(UserCallApi.class);
                 ShareBody sb = new ShareBody();
                 sb.setLoggedInUsrEmail(loginUser.getEmail());
-                sb.setRecipeId(id);
+                sb.setRecipeId(this.recipeId);
                 Call<ResponseBody> response = userApi.shareRecipe(sb);
                 response.enqueue(new Callback<ResponseBody>() {
                     @Override

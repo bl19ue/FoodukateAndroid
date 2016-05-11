@@ -40,10 +40,10 @@ public class RecipeDetailParser {
             }
             Object obj = recipeDetail.get("source");
             if(obj instanceof JSONObject){
-                source = "by " + recipeDetail.getJSONObject("source").getString("sourceDisplayName");
+                source = recipeDetail.getJSONObject("source").getString("sourceDisplayName");
                 sourceUrl = ((JSONObject) obj).getString("sourceRecipeUrl");
             }else {
-                source = "by " + recipeDetail.getString("source");
+                source = recipeDetail.getString("source");
                 sourceUrl = null;
             }
             obj = recipeDetail.get("imgUrl");
