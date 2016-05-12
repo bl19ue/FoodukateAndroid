@@ -82,18 +82,18 @@ public class IngredientListAdapter extends BaseAdapter {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 Ingredient thisIngredient = AddRecipeActivity.savedIngredientList.get(myViewHolder.reference);
-                if(thisIngredient != null) {
+                if (thisIngredient != null) {
                     thisIngredient.setQuantity(myViewHolder.ingredientQuantity.getText().toString());
 
                     AddRecipeActivity.savedIngredientList.set(myViewHolder.reference, thisIngredient);
                     AddRecipeActivity.ingredientListAdapter.notifyDataSetChanged();
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
         });
 

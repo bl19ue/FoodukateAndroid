@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.app.foodukate.common.GoogleSingleton;
@@ -61,6 +62,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 
         setContentView(R.layout.activity_login);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         setup();
 
 

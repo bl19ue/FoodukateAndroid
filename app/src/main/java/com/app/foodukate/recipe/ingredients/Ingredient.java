@@ -13,6 +13,7 @@ public class Ingredient {
         this._id = _id;
         this.name = name;
         this.labels = labels;
+        this.quantity = "1";
         this.label = (labels != null && labels.size() > 0 && labels.get(0) != null) ? labels.get(0) : "";
     }
 
